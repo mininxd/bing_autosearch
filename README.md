@@ -1,7 +1,6 @@
-## Bing Auto Search for Microsoft Rewards (bing_autosearch)
+#### Bing Auto Search for Microsoft Rewards (bing_autosearch) 
+_Browser-based Bing auto search bot to earn Microsoft Rewards points._
 
-### Forked version (vite based)
+__https://bing-xd.vercel.app/__
 
-Browser-based Bing auto search bot to earn Microsoft Rewards points.
-
-https://bing-xd.vercel.app/
+__Forked version (vite based) Refactored with tailwindcss and daisyUI__
