@@ -20,7 +20,7 @@
     <link type="text/css" rel="stylesheet" href="https://use.fontawesome.com/releases/v6.1.1/css/all.css" />
     <title>Bing Auto Search for Microsoft Rewards</title>
 </head>
-<body class="h-full flex items-center bg-[#1662ca] text-white font-['Roboto'] pt-6 pb-32">
+<body class="h-full flex items-center bg-[#1662ca] text-white font-['Roboto'] pt-6 pb-48">
     <section id="wrapper" class="max-w-[650px] mx-auto text-center px-4 pb-[-10em]">
         <header>
           <div class="w-full flex justify-center">
@@ -47,7 +47,7 @@
         <div class="flex justify-center gap-1">
           <button id="btn-settings" class="btn btn-primary modal-button text-white font-bold hover:underline" onclick="document.getElementById('modal-settings').classList.add('modal-open')">Auto Search Settings
           </button>
-          <button id="btn-warning" class="btn btn-secondary border-red-600 border-1 modal-button text-white font-bold hover:underline" onclick="document.getElementById('modal-warning').classList.add('modal-open')"><i class="fa-solid fa-circle-exclamation text-white"></i>
+          <button id="btn-settings-warning" class="btn btn-secondary border-red-600 border-1 modal-button text-white font-bold hover:underline" onclick="document.getElementById('modal-warning').classList.add('modal-open')"><i class="fa-solid fa-circle-exclamation text-white"></i>
           </button>
           </div>
             <p class="py-3 mt-6 text-lg text-left font-bold opacity-80">This page is not affiliated with Microsoft, Rewards, Bing or Edge.</p>
@@ -132,7 +132,7 @@
             </div>
           </div>
             <div class="modal-action">
-                <button id="btn-warning-close" class="btn" onclick="document.getElementById('modal-warning').classList.remove('modal-open')">Never See This Again</button>
+                <button id="btn-settings-warning-close" class="btn" onclick="document.getElementById('modal-warning').classList.remove('modal-open')">Never See This Again</button>
                 <button class="btn" onclick="document.getElementById('modal-warning').classList.remove('modal-open')">Close</button>
             </div>
         </div>

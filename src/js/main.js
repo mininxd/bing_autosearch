@@ -7,6 +7,7 @@ const BING_AUTOSEARCH = {
             start: document.getElementById("btn-start"),
             stop: document.getElementById("btn-stop"),
             settings: document.getElementById("btn-settings"),
+            warning: document.getElementById("btn-settings-warning"),
             divSettings: document.getElementById("div-settings"),
         },
         select: {
@@ -243,6 +244,7 @@ const BING_AUTOSEARCH = {
         BING_AUTOSEARCH.elements.button.start.addEventListener("click", () => {
             BING_AUTOSEARCH.elements.button.start.style.display = "none";
             BING_AUTOSEARCH.elements.button.settings.style.display = "none";
+            BING_AUTOSEARCH.elements.button.warning.style.display = "none";
             BING_AUTOSEARCH.elements.button.divSettings.style.display = "none";
             BING_AUTOSEARCH.elements.button.stop.style.display = "inline-block";
             BING_AUTOSEARCH.search.start();
