@@ -138,7 +138,7 @@ const BING_AUTOSEARCH = {
                       }
                         return `<br>
                         <div class="gap-1 justify-center flex flex-wrap">
-                        <div class="px-2 badge">${BING_AUTOSEARCH.elements.select.limit.options[BING_AUTOSEARCH.elements.select.limit.selectedIndex].text}</div><div class="px-2 badge">${BING_AUTOSEARCH.elements.select.interval.options[BING_AUTOSEARCH.elements.select.interval.selectedIndex].text} interval</div>
+                        <div class="px-2 badge">${BING_AUTOSEARCH.elements.select.limit.options[BING_AUTOSEARCH.elements.select.limit.selectedIndex].text.replace(/^0+/, "")}</div><div class="px-2 badge">${BING_AUTOSEARCH.elements.select.interval.options[BING_AUTOSEARCH.elements.select.interval.selectedIndex].text.replace(/^0+/, "")} interval</div>
                          ${multitabText}
                         </div>`;
                     }
@@ -177,10 +177,14 @@ const BING_AUTOSEARCH = {
                     let next = (BING_AUTOSEARCH.search.engine.timer.next - now);
                     let complete = (BING_AUTOSEARCH.search.engine.timer.complete - now);
                     if (BING_AUTOSEARCH.search.interval === 9999) {
-                        BING_AUTOSEARCH.elements.div.timer.innerHTML = `<strong>Auto Search Running:</strong> 10~60 seconds (random) auto search interval active.`;
+                        BING_AUTOSEARCH.elements.div.timer.innerHTML = `<div class="">
+                        <strong>Auto Search Running:</strong> 10~60 seconds (random) auto search interval active.
+                        </div>`;
                     }
                     else if (complete >= 0) {
-                        BING_AUTOSEARCH.elements.div.timer.innerHTML = `<strong>Auto Search Running:</strong> ${next >= 0 ? `New auto search in ${BING_AUTOSEARCH.search.engine.timer.toClockFormat(next)}` : "Finishing last auto search"}, estimated time to complete ${BING_AUTOSEARCH.search.engine.timer.toClockFormat(complete, true)}.`;
+                        BING_AUTOSEARCH.elements.div.timer.innerHTML = `${next >= 0 ? `<div class="flex flex-wrap justify-center gap-1">
+                        <div class="badge pr-0">Next auto search in: <div class="badge badge-success mx-0 translate-x-[2px]">
+                        ${BING_AUTOSEARCH.search.engine.timer.toClockFormat(next)}</div></div>` : "Finishing last auto search"} <br> <div class="badge pr-0">Auto Search ends in: <div class="badge badge-success mx-0 translate-x-[2px]"> ${BING_AUTOSEARCH.search.engine.timer.toClockFormat(complete, true)}</div></div></div>`;
                         setTimeout(() => {
                             BING_AUTOSEARCH.search.engine.timer.run();
                         }, 1000);
@@ -247,6 +251,7 @@ const BING_AUTOSEARCH = {
             BING_AUTOSEARCH.elements.button.warning.style.display = "none";
             BING_AUTOSEARCH.elements.button.divSettings.style.display = "none";
             BING_AUTOSEARCH.elements.button.stop.style.display = "inline-block";
+            BING_AUTOSEARCH.elements.div.timer.style.display = "block";
             BING_AUTOSEARCH.search.start();
         });
 
