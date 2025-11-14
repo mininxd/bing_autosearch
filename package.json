@@ -1,7 +1,7 @@
 {
-  "name": "a",
-  "private": true,
-  "version": "0.0.0",
+  "name": "Bing Auto Search",
+  "private": false,
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
