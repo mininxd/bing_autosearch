@@ -2,4 +2,4 @@
 
 Browser-based Bing auto search bot to earn Microsoft Rewards points.
 
-https://gerisonsabino.com/bing_autosearch
+https://bing-xd.vercel.app/
