@@ -1,8 +1,13 @@
+import "./localStorage.js";
+import search_terms from "../data/search-terms.js";
+
 const BING_AUTOSEARCH = {
     elements: {
         button: {
             start: document.getElementById("btn-start"),
-            stop: document.getElementById("btn-stop")
+            stop: document.getElementById("btn-stop"),
+            settings: document.getElementById("btn-settings"),
+            divSettings: document.getElementById("div-settings"),
         },
         select: {
             limit: document.getElementById("slc-limit"),
@@ -41,9 +46,14 @@ const BING_AUTOSEARCH = {
             return { name, value };
         },
         load: () => {
+            let _need_help = BING_AUTOSEARCH.cookies.get("_need_help");
             let _multitab_mode = BING_AUTOSEARCH.cookies.get("_multitab_mode");
             let _search_interval = BING_AUTOSEARCH.cookies.get("_search_interval");
             let _search_limit = BING_AUTOSEARCH.cookies.get("_search_limit");
+
+            if (!_need_help.value) {
+                BING_AUTOSEARCH.cookies.set("_need_help", BING_AUTOSEARCH.search.multitab.toString(), 365);
+            }
 
             if (!_search_interval.value) {
                 BING_AUTOSEARCH.cookies.set("_search_interval", BING_AUTOSEARCH.search.interval.toString(), 365);
@@ -75,7 +85,7 @@ const BING_AUTOSEARCH = {
     search: {
         limit: 35,
         interval: 10000,
-        multitab: false,
+        multitab: true,
         engine: {
             terms: {
                 lists: [],
@@ -120,7 +130,16 @@ const BING_AUTOSEARCH = {
             settings: {
                 toString: () => {
                     try {
-                        return `${BING_AUTOSEARCH.elements.select.limit.options[BING_AUTOSEARCH.elements.select.limit.selectedIndex].text}, ${BING_AUTOSEARCH.elements.select.interval.options[BING_AUTOSEARCH.elements.select.interval.selectedIndex].text} interval and Multi-tab Mode ${BING_AUTOSEARCH.elements.select.multitab.options[BING_AUTOSEARCH.elements.select.multitab.selectedIndex].text}`;
+                      let multitabText = "";
+                      const isMultitab = BING_AUTOSEARCH.elements.select.multitab.options[BING_AUTOSEARCH.elements.select.multitab.selectedIndex].value
+                      if(isMultitab == "true") {
+                        multitabText = `<div class="px-1 badge">Multi-tab Mode</div>`;
+                      }
+                        return `<br>
+                        <div class="gap-1 justify-center flex flex-wrap">
+                        <div class="px-1 badge">${BING_AUTOSEARCH.elements.select.limit.options[BING_AUTOSEARCH.elements.select.limit.selectedIndex].text}</div><div class="px-1 badge">${BING_AUTOSEARCH.elements.select.interval.options[BING_AUTOSEARCH.elements.select.interval.selectedIndex].text} interval</div>
+                         ${multitabText}
+                        </div>`;
                     }
                     catch (e) {
                         return `Oops! There was an error loading the settings, please clear your browser cookies and reload the page to continue`;
@@ -215,8 +234,7 @@ const BING_AUTOSEARCH = {
     load: async () => {
         BING_AUTOSEARCH.cookies.load();
         try {
-            const response = await fetch('src/data/search-terms.json');
-            const data = await response.json();
+            const data = search_terms();
             BING_AUTOSEARCH.search.engine.terms.lists = Object.values(data);
         } catch (error) {
             console.error('Failed to load search terms:', error);
@@ -224,6 +242,8 @@ const BING_AUTOSEARCH = {
 
         BING_AUTOSEARCH.elements.button.start.addEventListener("click", () => {
             BING_AUTOSEARCH.elements.button.start.style.display = "none";
+            BING_AUTOSEARCH.elements.button.settings.style.display = "none";
+            BING_AUTOSEARCH.elements.button.divSettings.style.display = "none";
             BING_AUTOSEARCH.elements.button.stop.style.display = "inline-block";
             BING_AUTOSEARCH.search.start();
         });
@@ -247,7 +267,7 @@ const BING_AUTOSEARCH = {
             location.reload();
         });
 
-        BING_AUTOSEARCH.elements.div.settings.innerHTML = `<strong>Auto Search Settings:</strong> ${BING_AUTOSEARCH.search.engine.settings.toString()}.`;
+        BING_AUTOSEARCH.elements.div.settings.innerHTML = `${BING_AUTOSEARCH.search.engine.settings.toString().replace(/\([^)]*\)/g, "")}`;
     }
 };
 

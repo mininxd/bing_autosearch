@@ -5,6 +5,7 @@
     <meta http-equiv="content-language" content="en-us" />
     <meta meta="title" content="Bing Auto Search for Microsoft Rewards" />
     <meta name="description" content="Browser-based Bing auto search bot to earn Microsoft Rewards points." />
+    <meta name="theme-color" content="#1662ca" />
     <meta name="robots" content="all" />
     <meta name="author" content="Gérison Sabino" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
@@ -19,72 +20,55 @@
     <link type="text/css" rel="stylesheet" href="https://use.fontawesome.com/releases/v6.1.1/css/all.css" />
     <title>Bing Auto Search for Microsoft Rewards</title>
 </head>
-<body class="min-h-screen flex items-center pb-[40px] bg-[#1662ca] text-white font-['Roboto']">
-    <section id="wrapper" class="max-w-[650px] mx-auto text-center p-[0.5em_1.5em]">
+<body class="h-full flex items-center bg-[#1662ca] text-white font-['Roboto'] pt-6 pb-32">
+    <section id="wrapper" class="max-w-[650px] mx-auto text-center px-4 pb-[-10em]">
         <header>
-            <img src="img/rewards.png" alt="Microsoft Rewards" />
-            <h2 class="font-bolder">Bing Auto Search for Microsoft Rewards</h2>
+          <div class="w-full flex justify-center">
+            <img src="img/rewards.png" alt="Microsoft Rewards" class="scale-[0.85]" />
+          </div>
+            <h2 class="font-extrabold text-2xl opacity-75">Bing Auto Search for Microsoft Rewards</h2>
         </header>
         <main class="py-[1.5em]">
             <div>
-                <button type="button" id="btn-start" class="btn btn-warning btn-lg bg-amber-500 hover:bg-amber-600 text-white font-bold py-4 px-6 rounded-lg text-xl">
+                <button type="button" id="btn-start" class="btn btn-warning btn-lg bg-amber-500 hover:bg-amber-600 text-white font-bold px-6 rounded-lg text-xl">
                     <i class="fas fa-play-circle"></i>
                     <strong class="font-bold">Click to Start Auto Search</strong>
-                    <hr class="my-2" />
-                    <div id="div-settings" class="text-sm opacity-70">Loading Auto Search Settings...</div>
                 </button>
-                <button type="button" id="btn-stop" class="btn btn-danger btn-lg bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-6 rounded-lg text-xl mt-4" style="display: none;">
+                <button type="button" id="btn-stop" class="btn btn-danger btn-lg bg-red-500 hover:bg-red-600 text-white font-bold pt-2 px-6 rounded-lg text-xl mt-4" style="display: none;">
                     <i class="fas fa-stop-circle"></i>
-                    <strong class="font-bold">Click to Stop Auto Search <span id="span-progress">(0/35)</span></strong>
-                    <hr class="my-2" />
-                    <div id="div-timer" class="text-sm opacity-70">Loading Auto Search Timer...</div>
+                    <strong class="font-bold">Stop Auto Search <span id="span-progress"></span></strong>
+                    <div id="div-timer" class="text-sm mt-4 mb-6 opacity-70">Loading Auto Search Timer...</div>
                 </button>
+              <div id="div-settings" class="text-sm opacity-70">Loading Auto Search Settings...</div>
             </div>
             <div id="div-bing" style="display: none !important; width: 0px !important; height: 0px !important;"></div>
         </main>
         <footer>
-            <a href="javascript:void(0);" class="modal-button text-yellow-400 font-bolder no-underline hover:underline" onclick="document.getElementById('modal-help').classList.add('modal-open')">Need help? (Tutorial and Settings)</a>
-            <p class="pt-3 opacity-80">This page is not affiliated with Microsoft, Rewards, Bing or Edge.</p>
-            <small class="opacity-80">Microsoft, Rewards, Bing and Edge are registered trademarks of Microsoft Corporation in the United States of America and elsewhere.</small>
-            <hr />
-            <label class="opacity-80">Made with &#9749; by</label>&nbsp;<a href="https://www.gerisonsabino.com/?ref=bing_autosearch" target="_blank" class="text-yellow-400 font-bolder no-underline hover:underline">Gérison Sabino</a>
+        <div class="flex justify-center gap-1">
+          <button id="btn-settings" class="btn btn-primary modal-button text-white font-bold hover:underline" onclick="document.getElementById('modal-settings').classList.add('modal-open')">Auto Search Settings
+          </button>
+          <button id="btn-warning" class="btn btn-secondary border-red-600 border-1 modal-button text-white font-bold hover:underline" onclick="document.getElementById('modal-warning').classList.add('modal-open')"><i class="fa-solid fa-circle-exclamation text-white"></i>
+          </button>
+          </div>
+            <p class="py-3 mt-6 text-lg text-left font-bold opacity-80">This page is not affiliated with Microsoft, Rewards, Bing or Edge.</p>
+            
+            <hr class="opacity-25 mb-2"/>
+            <label class="opacity-80">Originally made by</label>&nbsp;<a href="https://gerisonsabino.com/bing_autosearch/" target="_blank" class="text-yellow-400 font-bolder no-underline hover:underline">Gérison Sabino</a>
             <br />
-            <small class="opacity-80">This is a non-profit project and is licensed under open source terms on <a href="https://github.com/gerisonsabino/bing_autosearch" target="_blank" class="text-yellow-400 font-bolder no-underline hover:underline">GitHub</a>.</small>
+            <small class="opacity-80">This is a non-profit project and is licensed under open source terms on <a href="https://github.com/mininxd/bing_autosearch/" target="_blank" class="text-yellow-400 font-bolder no-underline hover:underline">GitHub</a>.</small>
         </footer>
     </section>
-    <div id="modal-help" class="modal">
-        <div class="modal-box w-11/12 max-w-2xl">
-            <h3 class="font-bold text-lg">Need help? (Tutorial and Settings)</h3>
-            <div class="py-4">
-                <div class="mb-4">
-                    <div class="alert alert-error text-sm">
-                        <p>
-                            <strong class="text-red-500">"Points need a break:"</strong> Under the new Microsoft Rewards rules, for some restricted accounts, points will only be awarded for 3 searches every 15 minutes (If this is your case, use the 5 minute interval.).
-                        </p>
-                        <p class="mb-0">
-                            Using automation tools is against the <a href="https://www.microsoft.com/en-US/servicesagreement/#14l_MicrosoftRewards" target="_blank" class="link">Microsoft Rewards terms of use</a>. <strong class="text-red-500">Your account may be restricted, suspended and/or banned, use this tool at your own risk.</strong>
-                        </p>
-                    </div>
-                </div>
-                <div class="mb-4">
-                    <h6>
-                        <strong class="text-gray-600">Tutorial</strong>
-                    </h6>
-                    <ol class="list-decimal pl-8 text-sm">
-                        <li><a href="https://www.bing.com/" target="_blank"><strong>Sign in to Bing</strong></a> with your Microsoft Rewards account and return to this page.</li>
-                        <li>Start a new auto search by clicking the "Start Auto Search" button, the progress counter will be showned.</li>
-                        <li>To perform mobile searches, use your smartphone or emulate a mobile browser through the developer tools (F12) on the PC.</li>
-                    </ol>
-                </div>
+    <div id="modal-settings" class="modal text-gray-900">
+        <div class="modal-box shadow-md w-11/12 max-w-2xl">
                 <div>
-                    <h6>
-                        <strong class="text-gray-600">Settings</strong>
-                    </h6>
-                    <div class="form-control pb-3">
+                    <h1 class="text-2xl pb-2">
+                        <strong class="text-gray-600 ">Settings</strong>
+                    </h1>
+                    <div class="form-control text-gray-900  pb-3">
                         <label class="label">
                             <span class="label-text font-bold">Limit</span>
                         </label>
-                        <select class="select select-bordered" id="slc-limit">
+                        <select class="select appearance-none select-bordered" id="slc-limit">
                             <option value="5">05 searches</option>
                             <option value="10">10 searches</option>
                             <option value="20">20 searches</option>
@@ -96,11 +80,11 @@
                             <option value="50">50 searches</option>
                         </select>
                     </div>
-                    <div class="form-control pb-3">
+                    <div class=" text-gray-900    pb-3">
                         <label class="label">
                             <span class="label-text font-bold">Interval</span>
                         </label>
-                        <select class="select select-bordered" id="slc-interval">
+                        <select class="select appearance-none select-bordered" id="slc-interval">
                             <option value="5000">05 seconds</option>
                             <option value="10000" selected="selected">10 seconds (default)</option>
                             <option value="15000">15 seconds</option>
@@ -113,25 +97,46 @@
                             <option value="300000">05 minutes (recomended for restricted accounts)</option>
                         </select>
                     </div>
-                    <div class="form-control">
+                    <div class="form-control text-gray-900   ">
                         <label class="label">
                             <span class="label-text font-bold">Multi-tab Mode</span>
                         </label>
-                        <p class="text-sm mb-0">
-                            <small>When enabled, it's necessary to allow opening of multiple tabs/pop-ups in your browser.</small>
+                        <p class="text-sm text-gray-400 mb-2">
+                            When enabled, it's necessary to allow opening of multiple tabs/pop-ups in your browser.
                         </p>
-                        <select class="select select-bordered" id="slc-multitab">
-                            <option value="true">Enabled</option>
-                            <option value="false" selected="selected">Disabled (default)</option>
+                        <select class="select appearance-none select-bordered" id="slc-multitab">
+                            <option selected="selected" value="true">Enabled (default)</option>
+                            <option value="false">Disabled</option>
                         </select>
                     </div>
                 </div>
-            </div>
             <div class="modal-action">
-                <button class="btn" onclick="document.getElementById('modal-help').classList.remove('modal-open')">Close</button>
+                <button class="btn" onclick="document.getElementById('modal-settings').classList.remove('modal-open')">Close</button>
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="src/js/main.js" defer></script>
+    <div id="modal-warning" class="modal text-gray-900">
+        <div class="modal-box shadow-md w-11/12 max-w-2xl">
+          <div class="card bg-base-100">
+            <div class="card-body rounded-md text-error-content bg-error border-1 border-red-600">
+              <span class="font-bold text-red-600">"Points Need A Break"</span>
+               Under the new Microsoft Rewards rules, for some restricted accounts, points will only be awarded for 3 searches every 15 minutes (If this is your case, use the 5 minute interval).
+              <br><br>
+              <span class="inline">
+               Using automation tools is against the <a class="font-extrabold underline" href="https://www.microsoft.com/en-US/servicesagreement/#14l_MicrosoftRewards" target="_blank">Microsoft Rewards terms of use.
+              </a>
+              </span>
+              <span class="font-extrabold">
+                Your account may be restricted, suspended and/or banned, use this tool at your own risk.
+             </span>
+            </div>
+          </div>
+            <div class="modal-action">
+                <button id="btn-warning-close" class="btn" onclick="document.getElementById('modal-warning').classList.remove('modal-open')">Never See This Again</button>
+                <button class="btn" onclick="document.getElementById('modal-warning').classList.remove('modal-open')">Close</button>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="src/js/main.js"></script>
 </body>
 </html>
