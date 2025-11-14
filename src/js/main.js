@@ -178,7 +178,7 @@ const BING_AUTOSEARCH = {
                     let complete = (BING_AUTOSEARCH.search.engine.timer.complete - now);
                     if (BING_AUTOSEARCH.search.interval === 9999) {
                         BING_AUTOSEARCH.elements.div.timer.innerHTML = `<div class="">
-                        <strong>Auto Search Running:</strong> 10~60 seconds (random) auto search interval active.
+                        10~60 seconds (random) auto search interval active.
                         </div>`;
                     }
                     else if (complete >= 0) {
@@ -190,7 +190,7 @@ const BING_AUTOSEARCH = {
                         }, 1000);
                     }
                     else {
-                        BING_AUTOSEARCH.elements.div.timer.innerHTML = `<strong>Auto Search Running:</strong> Stopping the auto search process...`;
+                        BING_AUTOSEARCH.elements.div.timer.innerHTML = `<strong>Stopping the auto search process...</strong>`;
                     }
                 }
             }
