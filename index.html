@@ -30,7 +30,7 @@
         </header>
         <main class="py-[1.5em]">
             <div>
-                <button type="button" id="btn-start" class="btn btn-warning btn-lg bg-amber-500 hover:bg-amber-600 text-white font-bold px-6 rounded-lg text-xl">
+                <button type="button" id="btn-start" class="btn shadow-xl btn-warning btn-lg bg-amber-500 hover:bg-amber-600 text-white font-bold px-6 rounded-lg text-xl">
                     <i class="fas fa-play-circle"></i>
                     <strong class="font-bold">Click to Start Auto Search</strong>
                 </button>
@@ -45,12 +45,12 @@
         </main>
         <footer>
         <div class="flex justify-center gap-1">
-          <button id="btn-settings" class="btn btn-primary modal-button text-white font-bold hover:underline" onclick="document.getElementById('modal-settings').classList.add('modal-open')">Auto Search Settings
+          <button id="btn-settings" class="btn btn-primary modal-button shadow-sm text-primary-content font-bold hover:underline" onclick="document.getElementById('modal-settings').classList.add('modal-open')">Auto Search Settings
           </button>
-          <button id="btn-settings-warning" class="btn btn-secondary border-red-600 border-1 modal-button text-white font-bold hover:underline" onclick="document.getElementById('modal-warning').classList.add('modal-open')"><i class="fa-solid fa-circle-exclamation text-white"></i>
+          <button id="btn-settings-warning" class="btn btn-primary shadow-sm modal-button font-bold hover:underline" onclick="document.getElementById('modal-warning').classList.add('modal-open')"><i class="fa-solid fa-circle-exclamation text-lg"></i>
           </button>
           </div>
-            <p class="py-3 mt-6 text-lg text-left font-bold opacity-80">This page is not affiliated with Microsoft, Rewards, Bing or Edge.</p>
+            <p class="py-3 mt-12 text-lg text-left font-bold opacity-80">This page is not affiliated with Microsoft, Rewards, Bing or Edge.</p>
             
             <hr class="opacity-25 mb-2"/>
             <label class="opacity-80">Originally made by</label>&nbsp;<a href="https://gerisonsabino.com/bing_autosearch/" target="_blank" class="text-yellow-400 font-bolder no-underline hover:underline">Gérison Sabino</a>
@@ -59,7 +59,7 @@
         </footer>
     </section>
     <div id="modal-settings" class="modal text-gray-900">
-        <div class="modal-box shadow-md w-11/12 max-w-2xl">
+        <div class="modal-box shadow-md w-11/12 max-w-2xl md:px-12 md:mx-12">
                 <div>
                     <h1 class="text-2xl pb-2">
                         <strong class="text-gray-600 ">Settings</strong>
@@ -67,7 +67,7 @@
                     <div class="form-control text-gray-900  pb-3">
                         <label class="label">
                             <span class="label-text font-bold">Limit</span>
-                        </label>
+                        </label><br>
                         <select class="select appearance-none select-bordered" id="slc-limit">
                             <option value="5">05 searches</option>
                             <option value="10">10 searches</option>
@@ -83,7 +83,7 @@
                     <div class=" text-gray-900    pb-3">
                         <label class="label">
                             <span class="label-text font-bold">Interval</span>
-                        </label>
+                        </label><br>
                         <select class="select appearance-none select-bordered" id="slc-interval">
                             <option value="5000">05 seconds</option>
                             <option value="10000" selected="selected">10 seconds (default)</option>
@@ -100,7 +100,7 @@
                     <div class="form-control text-gray-900   ">
                         <label class="label">
                             <span class="label-text font-bold">Multi-tab Mode</span>
-                        </label>
+                        </label><br>
                         <p class="text-sm text-gray-400 mb-2">
                             When enabled, it's necessary to allow opening of multiple tabs/pop-ups in your browser.
                         </p>
@@ -111,12 +111,12 @@
                     </div>
                 </div>
             <div class="modal-action">
-                <button class="btn" onclick="document.getElementById('modal-settings').classList.remove('modal-open')">Close</button>
+                <button class="btn btn-primary" onclick="document.getElementById('modal-settings').classList.remove('modal-open')">Close</button>
             </div>
         </div>
     </div>
     <div id="modal-warning" class="modal text-gray-900">
-        <div class="modal-box shadow-md w-11/12 max-w-2xl">
+        <div class="modal-box shadow-md w-11/12 max-w-2xl md:px-12 md:mx-12">
           <div class="card bg-base-100">
             <div class="card-body rounded-md text-error-content bg-error border-1 border-red-600">
               <span class="font-bold text-red-600">"Points Need A Break"</span>
@@ -132,8 +132,8 @@
             </div>
           </div>
             <div class="modal-action">
-                <button id="btn-settings-warning-close" class="btn" onclick="document.getElementById('modal-warning').classList.remove('modal-open')">Never See This Again</button>
-                <button class="btn" onclick="document.getElementById('modal-warning').classList.remove('modal-open')">Close</button>
+                <button id="btn-settings-warning-close" class="btn btn-error" onclick="document.getElementById('modal-warning').classList.remove('modal-open')">Never See This Again</button>
+                <button class="btn btn-primary" onclick="document.getElementById('modal-warning').classList.remove('modal-open')">Close</button>
             </div>
         </div>
     </div>

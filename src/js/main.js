@@ -134,11 +134,11 @@ const BING_AUTOSEARCH = {
                       let multitabText = "";
                       const isMultitab = BING_AUTOSEARCH.elements.select.multitab.options[BING_AUTOSEARCH.elements.select.multitab.selectedIndex].value
                       if(isMultitab == "true") {
-                        multitabText = `<div class="px-1 badge">Multi-tab Mode</div>`;
+                        multitabText = `<div class="px-2 badge">Multi-tab Mode</div>`;
                       }
                         return `<br>
                         <div class="gap-1 justify-center flex flex-wrap">
-                        <div class="px-1 badge">${BING_AUTOSEARCH.elements.select.limit.options[BING_AUTOSEARCH.elements.select.limit.selectedIndex].text}</div><div class="px-1 badge">${BING_AUTOSEARCH.elements.select.interval.options[BING_AUTOSEARCH.elements.select.interval.selectedIndex].text} interval</div>
+                        <div class="px-2 badge">${BING_AUTOSEARCH.elements.select.limit.options[BING_AUTOSEARCH.elements.select.limit.selectedIndex].text}</div><div class="px-2 badge">${BING_AUTOSEARCH.elements.select.interval.options[BING_AUTOSEARCH.elements.select.interval.selectedIndex].text} interval</div>
                          ${multitabText}
                         </div>`;
                     }
