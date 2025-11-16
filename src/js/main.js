@@ -17,46 +17,24 @@ const BING_AUTOSEARCH = {
   isRunning: false,
   wakeLock: null,
 
-  async acquireWakeLock() {
+  acquireWakeLock() {
     try {
-      if ('wakeLock' in navigator) {
-        this.wakeLock = await navigator.wakeLock.request('screen');
-        this.wakeLock.addEventListener('release', () => {
-          console.log('Screen Wake Lock released');
-        });
-        console.log('Screen Wake Lock acquired');
-        return true;
-      } else {
-        console.warn('Wake Lock API not supported by this browser');
-        return false;
-      }
-    } catch (err) {
-      console.error(`Failed to acquire Wake Lock: ${err.message}`);
-      return false;
+      this.wakeLock = navigator.wakeLock.request("screen");
+    } catch (e) {
+      console.log(e);
     }
   },
 
-  async releaseWakeLock() {
-    if (this.wakeLock !== null) {
-      try {
-        await this.wakeLock.release();
-        this.wakeLock = null;
-        console.log('Screen Wake Lock released');
-      } catch (err) {
-        console.error(`Failed to release Wake Lock: ${err.message}`);
-      }
-    }
+  getWakelockStatus() {
+    return this.wakeLock !== null;
   },
-
+  
   async load() {
-    // Initialize UI elements
     const elements = uiElements.init();
 
-    // Load configuration from cookies
     const config = cookieHandler.load(BING_AUTOSEARCH.config);
     BING_AUTOSEARCH.config = config;
 
-    // Update select values to match loaded config
     elements.select.interval.value = config.interval;
     elements.select.limit.value = config.limit;
     elements.select.multitab.value = config.multitab.toString();
@@ -69,21 +47,29 @@ const BING_AUTOSEARCH = {
       console.error('Failed to load search terms:', error);
     }
 
-    // Setup event handlers
-    eventHandlers.setupEventListeners(elements, cookieHandler, BING_AUTOSEARCH.config);
+    eventHandlers.setupEventListeners(
+      elements,
+      cookieHandler,
+      BING_AUTOSEARCH.config
+    );
 
-    // Add specific start button handler
-    elements.button.start.addEventListener("click", () => {
-      searchHandler.start(elements, BING_AUTOSEARCH.config, searchEngine, timerHandler, stopSearch);
+    elements.button.start.addEventListener("click", async () => {
+      await searchHandler.start(
+        elements,
+        BING_AUTOSEARCH.config,
+        searchEngine,
+        timerHandler,
+        stopSearch
+      );
     });
 
-    // Add stop button handler
     elements.button.stop.addEventListener("click", () => {
       searchHandler.stop();
     });
 
-    // Set up settings display
-    elements.div.settings.innerHTML = `${searchEngine.settings.toString(elements).replace(/\([^)]*\)/g, "")}`;
+    elements.div.settings.innerHTML = `${searchEngine.settings
+      .toString(elements, BING_AUTOSEARCH)
+      .replace(/\([^)]*\)/g, "")}`;
   }
 };
 

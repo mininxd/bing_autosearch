@@ -50,33 +50,61 @@ export const searchEngine = {
   },
   
   settings: {
-    toString: (elements) => {
-      try {
-        let multitabText = "";
-        let wakelockText = "";
-        
-        const isMultitab = elements.select.multitab.options[elements.select.multitab.selectedIndex].value
-        const isWakelock = elements.checkbox.wakelock.checked
-        
-        if(isWakelock /*boolean*/) {
-          wakelockText = `<div class="px-2 badge">Wake Lock Active</div>`;
-        }
-        if(isMultitab == "true") {
-          multitabText = `<div class="px-2 badge">Multi-tab Mode</div>`;
-        }
-        return `<br>
-        <div class="gap-1 justify-center flex flex-wrap">
-        <div class="px-2 badge">${elements.select.limit.options[elements.select.limit.selectedIndex].text.replace(/^0+/, "")}</div><div class="px-2 badge">${elements.select.interval.options[elements.select.interval.selectedIndex].text.replace(/^0+/, "")} interval</div>
-         ${multitabText}
-         ${wakelockText}
+  toString: (elements, BING_AUTOSEARCH) => {
+    try {
+      if (elements.checkbox.wakelock) {
+       BING_AUTOSEARCH.acquireWakeLock();
+      }
+      
+      let multitabText = "";
+      let wakelockText = "";
+      let wakeLockUp = `<span class="loading loading-spinner loading-xs"></span>`;
+      
+      const isMultitab = elements.select.multitab.options[elements.select.multitab.selectedIndex].value
+      const isWakelock = elements.checkbox.wakelock.checked
+      const isWakelockUp = BING_AUTOSEARCH.getWakelockStatus()
+      
+      /*
+      setInterval(() => {
+        console.log(isWakelockUp)
+      }, 1000)
+      */
+      
+      if (isWakelockUp) {
+        wakeLockUp = "Wake Lock Active";
+      } else {
+        wakeLockUp = "Wake Lock Deactivated";
+      }
+
+      if (isWakelock) {
+        wakelockText = `<div class="px-2 badge">Wake Lock 
+          <div class="tooltip">
+            <div class="tooltip-content">
+              ${wakeLockUp}
+            </div>
+            <i class="fa fa-solid fa-circle-info"></i>
+          </div>
         </div>`;
       }
-      catch (e) {
-        console.log(e);
-        return `Oops! There was an error loading the settings, please clear your browser cookies and reload the page to continue`;
+
+      if (isMultitab == "true") {
+        multitabText = `<div class="px-2 badge">Multi-tab Mode</div>`;
       }
+
+      return `<br>
+      <div class="gap-1 justify-center flex flex-wrap">
+        <div class="px-2 badge">${elements.select.limit.options[elements.select.limit.selectedIndex].text.replace(/^0+/, "")}</div>
+        <div class="px-2 badge">${elements.select.interval.options[elements.select.interval.selectedIndex].text.replace(/^0+/, "")} interval</div>
+        ${multitabText}
+        ${wakelockText}
+      </div>`;
     }
-  },
+    catch (e) {
+      console.log(e);
+      return `Oops! There was an error loading the settings, please clear your browser cookies and reload the page to continue`;
+    }
+  }
+},
   
   progress: {
     update: (search, elements, searchConfig) => {

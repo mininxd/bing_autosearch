@@ -22,17 +22,11 @@ export const searchHandler = {
     return searches;
   },
 
-  start: (elements, searchConfig, searchEngine, timerHandler, stopSearch) => {
-    // Set running flag
+  start: async (elements, searchConfig, searchEngine, timerHandler, stopSearch) => {
     isRunning = true;
     window.BING_AUTOSEARCH.isRunning = true;
 
     let searches = searchHandler.generate(searchConfig, searchEngine);
-
-    // Attempt to acquire wake lock if enabled
-    if (elements.checkbox.wakelock.checked) {
-      window.BING_AUTOSEARCH.acquireWakeLock();
-    }
 
     searches.forEach((search) => {
       setTimeout(() => {
@@ -53,20 +47,15 @@ export const searchHandler = {
     });
   },
 
-  stop: () => {
-    // Set running flag
+  stop: async () => {
     isRunning = false;
     window.BING_AUTOSEARCH.isRunning = false;
-
-    // Release wake lock if it was acquired
-    window.BING_AUTOSEARCH.releaseWakeLock();
 
     window.open("https://rewards.bing.com/pointsbreakdown");
     location.reload();
   }
 };
 
-// Export the stop function separately so it can be called directly
-export const stopSearch = () => {
-  searchHandler.stop();
+export const stopSearch = async () => {
+  await searchHandler.stop();
 };

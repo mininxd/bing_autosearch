@@ -32,8 +32,9 @@ export const eventHandlers = {
       location.reload();
     });
 
-    elements.checkbox.wakelock.addEventListener("change", () => {
+    elements.checkbox.wakelock.addEventListener("change", async () => {
       cookieHandler.set("_wakelock_enabled", elements.checkbox.wakelock.checked, 365);
+
       location.reload();
     });
   }

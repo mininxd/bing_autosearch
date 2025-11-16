@@ -13,7 +13,7 @@ const warningState = {
   }
 };
 const wakeLockHandler = {
-  init: () => {
+  init: async () => {
   const checkbox = document.getElementById("chk-wakelock");
   
   checkbox.addEventListener("input", () => {
@@ -22,10 +22,11 @@ const wakeLockHandler = {
   
   if(localStorage.getItem("wakelock-check") == "true") {
     checkbox.checked = true;
-    }
+  }
 }
 };
 
 
 warningState.init();
 wakeLockHandler.init();
+
