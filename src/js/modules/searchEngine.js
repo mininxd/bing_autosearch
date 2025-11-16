@@ -52,54 +52,85 @@ export const searchEngine = {
   settings: {
   toString: (elements, BING_AUTOSEARCH) => {
     try {
-      if (elements.checkbox.wakelock) {
-       BING_AUTOSEARCH.acquireWakeLock();
-      }
-      
-      let multitabText = "";
-      let wakelockText = "";
-      let wakeLockUp = `<span class="loading loading-spinner loading-xs"></span>`;
-      
-      const isMultitab = elements.select.multitab.options[elements.select.multitab.selectedIndex].value
-      const isWakelock = elements.checkbox.wakelock.checked
-      const isWakelockUp = BING_AUTOSEARCH.getWakelockStatus()
-      
-      /*
-      setInterval(() => {
-        console.log(isWakelockUp)
-      }, 1000)
-      */
-      
-      if (isWakelockUp) {
-        wakeLockUp = "Wake Lock Active";
-      } else {
-        wakeLockUp = "Wake Lock Deactivated";
+      if (elements.checkbox.wakelock.checked) {
+        BING_AUTOSEARCH.acquireWakeLock();
       }
 
+      let multitabText = "";
+      let wakelockText = "";
+
+      const isMultitab =
+        elements.select.multitab.options[
+          elements.select.multitab.selectedIndex
+        ].value;
+
+      const isWakelock = elements.checkbox.wakelock.checked;
+
+      const waitForTooltip = setInterval(() => {
+        const wakeLockStatus = document.getElementById("wakeLockStatus");
+        if (!wakeLockStatus) return;
+
+        wakeLockStatus.innerHTML =
+          `<span class="loading loading-spinner loading-xs"></span>`;
+
+        clearInterval(waitForTooltip);
+      }, 50);
+
+      let i = 0;
+      const wakeLockInterval = setInterval(() => {
+        i++;
+        const wakeLockStatus = document.getElementById("wakeLockStatus");
+        if (!wakeLockStatus) return;
+        const isUp = BING_AUTOSEARCH.getWakelockStatus();
+
+        if (!isUp) {
+          wakeLockStatus.innerText = "Wake Lock Deactivated";
+        } else {
+          wakeLockStatus.innerText = "Wake Lock Active";
+        }
+
+        if (i === 5) {
+          clearInterval(wakeLockInterval);
+        }
+      }, 2500);
+
       if (isWakelock) {
-        wakelockText = `<div class="px-2 badge">Wake Lock 
+        wakelockText = `
+        <div class="px-2 badge">Wake Lock 
           <div class="tooltip">
-            <div class="tooltip-content">
-              ${wakeLockUp}
-            </div>
+            <div id="wakeLockStatus" class="tooltip-content"></div>
             <i class="fa fa-solid fa-circle-info"></i>
           </div>
         </div>`;
       }
 
-      if (isMultitab == "true") {
+      if (isMultitab === "true") {
         multitabText = `<div class="px-2 badge">Multi-tab Mode</div>`;
       }
 
-      return `<br>
+      return `
+      <br>
       <div class="gap-1 justify-center flex flex-wrap">
-        <div class="px-2 badge">${elements.select.limit.options[elements.select.limit.selectedIndex].text.replace(/^0+/, "")}</div>
-        <div class="px-2 badge">${elements.select.interval.options[elements.select.interval.selectedIndex].text.replace(/^0+/, "")} interval</div>
+        <div class="px-2 badge">
+          ${
+            elements.select.limit.options[
+              elements.select.limit.selectedIndex
+            ].text.replace(/^0+/, "")
+          }
+        </div>
+
+        <div class="px-2 badge">
+          ${
+            elements.select.interval.options[
+              elements.select.interval.selectedIndex
+            ].text.replace(/^0+/, "")
+          } interval
+        </div>
+
         ${multitabText}
         ${wakelockText}
       </div>`;
-    }
-    catch (e) {
+    } catch (e) {
       console.log(e);
       return `Oops! There was an error loading the settings, please clear your browser cookies and reload the page to continue`;
     }

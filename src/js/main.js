@@ -17,11 +17,12 @@ const BING_AUTOSEARCH = {
   isRunning: false,
   wakeLock: null,
 
-  acquireWakeLock() {
+  async acquireWakeLock() {
     try {
-      this.wakeLock = navigator.wakeLock.request("screen");
+      this.wakeLock = await navigator.wakeLock.request("screen");
     } catch (e) {
       console.log(e);
+      this.wakeLock = false;
     }
   },
 
