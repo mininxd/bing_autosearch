@@ -24,7 +24,9 @@ export const searchHandler = {
 
   start: async (elements, searchConfig, searchEngine, timerHandler, stopSearch) => {
     isRunning = true;
-    window.BING_AUTOSEARCH.isRunning = true;
+    if (window.BING_AUTOSEARCH) {
+      window.BING_AUTOSEARCH.isRunning = true;
+    }
 
     let searches = searchHandler.generate(searchConfig, searchEngine);
 
@@ -49,7 +51,9 @@ export const searchHandler = {
 
   stop: async () => {
     isRunning = false;
-    window.BING_AUTOSEARCH.isRunning = false;
+    if (window.BING_AUTOSEARCH) {
+      window.BING_AUTOSEARCH.isRunning = false;
+    }
 
     window.open("https://rewards.bing.com/pointsbreakdown");
     location.reload();
