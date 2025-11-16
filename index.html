@@ -97,7 +97,7 @@
                             <option value="300000">05 minutes (recomended for restricted accounts)</option>
                         </select>
                     </div>
-                    <div class="form-control text-gray-900">
+                    <div class="form-control text-gray-900 pb-3">
                         <label class="label">
                             <span class="label-text font-bold">Multi-tab Mode</span>
                         </label><br>
@@ -108,6 +108,15 @@
                             <option selected="selected" value="true">Enabled (default)</option>
                             <option value="false">Disabled</option>
                         </select>
+                    </div>
+                    <div class="form-control text-gray-900">
+                      <label class="label font-bold">
+                           <input type="checkbox" id="chk-wakelock" class="checkbox" />
+                           Acquire Wake Lock
+                      </label>
+                      <p class="text-sm text-gray-400 mb-2">
+                      When enabled, it prevents your screen from turning off, especially on mobile devices.
+                        </p>
                     </div>
                 </div>
             <div class="modal-action">
