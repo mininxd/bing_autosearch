@@ -81,7 +81,9 @@ const BING_AUTOSEARCH = {
 
 
   getWakelockStatus() {
-    return this.wakeLock !== null;
+    // Return true if wake lock is active (not null or false)
+    // The wakeLock is set to null in the release event handler when it's released
+    return this.wakeLock !== null && this.wakeLock !== false;
   },
   
   async load() {

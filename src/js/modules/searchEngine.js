@@ -87,23 +87,22 @@ export const searchEngine = {
         clearInterval(waitForTooltip);
       }, 50);
 
-      let i = 0;
-      const wakeLockInterval = setInterval(() => {
-        i++;
-        const wakeLockStatus = document.getElementById("wakeLockStatus");
-        if (!wakeLockStatus) return;
-        const isUp = BING_AUTOSEARCH.getWakelockStatus();
 
-        if (!isUp) {
-          wakeLockStatus.innerText = "Wake Lock Deactivated";
-        } else {
-          wakeLockStatus.innerText = "Wake Lock Active";
-        }
+let lastState;
+function wakeLockState() {
+  const el = document.getElementById("wakeLockStatus");
+  if (el) {
+    const isUp = BING_AUTOSEARCH.getWakelockStatus();
+    
+    if (isUp !== lastState) {
+      el.innerText = isUp ? "Wake Lock Active" : "Wake Lock Deactivated";
+      lastState = isUp;
+    }
+  }
+  setTimeout(wakeLockState, 2500);
+}
+wakeLockState();
 
-        if (i === 5) {
-          clearInterval(wakeLockInterval);
-        }
-      }, 2500);
 
       if (isWakelock) {
         wakelockText = `
