@@ -1,6 +1,17 @@
 /**
  * Module for search engine functionality including terms, forms, windows, iframes, etc.
  */
+ 
+ 
+function searchInterval(interval = search.interval) {
+  if (interval === 5000) {
+    return 3000;
+  } else if (interval <= 10000) {
+    return 5000;
+  } else {
+    return 10000;
+  }
+}
 
 export const searchEngine = {
   terms: {
@@ -28,7 +39,7 @@ export const searchEngine = {
         if (w) {
           setTimeout(() => {
             w.close();
-          }, (search.interval <= 10000 && search.interval !== 9999 ? search.interval : 10000) - 500);
+          }, searchInterval(search.interval));
         }
       }
       catch (e) { 
