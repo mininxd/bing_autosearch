@@ -119,6 +119,17 @@ const BING_AUTOSEARCH = {
       BING_AUTOSEARCH.config.categories = ["games", "cars", "songs", "artists", "characters", "movies"];
     }
 
+    // Initialize categories message visibility and add individual checkbox listeners for live detection
+    updateCategoryMessage();
+
+    // Add individual event listeners to each checkbox for immediate feedback
+    const categoryForm = document.getElementById('slc-categories');
+    const checkboxes = categoryForm.querySelectorAll('input[name="categories"]');
+
+    checkboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', updateCategoryMessage);
+    });
+
     try {
       const data = search_terms();
       // Store the search_terms function for later use
@@ -161,6 +172,21 @@ const BING_AUTOSEARCH = {
       .replace(/\([^)]*\)/g, "")}`;
   }
 };
+
+// Function to check if any categories are selected and update message visibility
+function updateCategoryMessage() {
+  const categoryForm = document.getElementById('slc-categories');
+  const checkboxes = categoryForm.querySelectorAll('input[name="categories"]');
+  const selectedCheckboxes = Array.from(checkboxes).filter(checkbox => checkbox.checked);
+  const categoriesMsg = document.getElementById('categoriesMsg');
+
+  // Show message if no categories are selected
+  if (selectedCheckboxes.length === 0) {
+    categoriesMsg.style.display = 'block';
+  } else {
+    categoriesMsg.style.display = 'none';
+  }
+}
 
 window.addEventListener("load", async () => {
   await BING_AUTOSEARCH.load();

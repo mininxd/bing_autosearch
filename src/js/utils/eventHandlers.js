@@ -61,7 +61,11 @@ export const eventHandlers = {
       categoryForm.addEventListener("change", () => {
         const selectedCheckboxes = categoryForm.querySelectorAll('input[name="categories"]:checked');
         const selectedCategories = Array.from(selectedCheckboxes).map(checkbox => checkbox.value);
-        cookieHandler.set("_search_categories", selectedCategories, 365);
+
+        // Only save to cookie if at least one category is selected
+        if (selectedCategories.length > 0) {
+          cookieHandler.set("_search_categories", selectedCategories, 365);
+        }
 
         // Check if categories have changed
         const currentCategories = Array.from(selectedCheckboxes).map(checkbox => checkbox.value);
@@ -88,6 +92,11 @@ export const eventHandlers = {
         } catch (error) {
           console.error('Failed to update search terms:', error);
         }
+
+        // Update the category message display
+        if (typeof updateCategoryMessage === 'function') {
+          updateCategoryMessage();
+        }
       });
     }
 
@@ -99,6 +108,22 @@ export const eventHandlers = {
     if (settingsModal) {
       settingsModal.addEventListener('click', function(event) {
         if (event.target === settingsModal) {
+          // Check if any categories are selected
+          const categoryForm = document.getElementById('slc-categories');
+          const checkboxes = categoryForm.querySelectorAll('input[name="categories"]');
+          const selectedCheckboxes = Array.from(checkboxes).filter(checkbox => checkbox.checked);
+
+          // Prevent closing if no categories are selected
+          if (selectedCheckboxes.length === 0) {
+            // Show the categories message if hidden
+            if (typeof updateCategoryMessage === 'function') {
+              updateCategoryMessage();
+            }
+
+            // Prevent closing the modal
+            return;
+          }
+
           settingsModal.classList.remove('modal-open');
           // Reload page if settings have changed
           if (settingsChanged) {
@@ -124,6 +149,22 @@ export const eventHandlers = {
         // Find the closest modal and close it
         const modal = this.closest('.modal');
         if (modal && modal.id === 'modal-settings') {
+          // Check if any categories are selected
+          const categoryForm = document.getElementById('slc-categories');
+          const checkboxes = categoryForm.querySelectorAll('input[name="categories"]');
+          const selectedCheckboxes = Array.from(checkboxes).filter(checkbox => checkbox.checked);
+
+          // Prevent closing if no categories are selected
+          if (selectedCheckboxes.length === 0) {
+            // Show the categories message if hidden
+            if (typeof updateCategoryMessage === 'function') {
+              updateCategoryMessage();
+            }
+
+            // Prevent closing the modal
+            return;
+          }
+
           // Reload page if settings have changed
           if (settingsChanged) {
             location.reload();
@@ -143,6 +184,13 @@ export const eventHandlers = {
         const targetModal = document.getElementById(targetModalId);
         if (targetModal) {
           targetModal.classList.add('modal-open');
+
+          // If this is the settings modal, update the category message visibility
+          if (targetModalId === 'modal-settings') {
+            if (typeof updateCategoryMessage === 'function') {
+              updateCategoryMessage();
+            }
+          }
         }
       });
     });
