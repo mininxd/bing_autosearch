@@ -34,6 +34,7 @@ export const cookieHandler = {
     const _search_interval = cookieHandler.get("_search_interval");
     const _search_limit = cookieHandler.get("_search_limit");
     const _wakelock_enabled = cookieHandler.get("_wakelock_enabled");
+    const _sequential_enabled = cookieHandler.get("_sequential_enabled");
 
     let config = { ...defaultConfig };
 
@@ -67,6 +68,12 @@ export const cookieHandler = {
       cookieHandler.set("_wakelock_enabled", config.wakelock.toString(), 365);
     } else {
       config.wakelock = (_wakelock_enabled.value === "true");
+    }
+
+    if (!_sequential_enabled.value) {
+      cookieHandler.set("_sequential_enabled", config.sequential.toString(), 365);
+    } else {
+      config.sequential = (_sequential_enabled.value === "true");
     }
 
     return config;

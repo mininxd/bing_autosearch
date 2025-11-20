@@ -3,12 +3,15 @@
  */
 
 let isRunning = false;
+let generatedSearches = [];
 
 export const searchHandler = {
   generate: (searchConfig, searchEngine) => {
     let searches = new Array();
     let randomDelay = 0;
+
     do {
+      // Use random terms (formerly sequential functionality removed)
       let term = searchEngine.terms.random();
       if (!searches.includes(term)) {
         let index = searches.length + 1;
@@ -19,7 +22,15 @@ export const searchHandler = {
         searches.push({ term, url, index, delay, interval: searchConfig.interval });
       }
     } while (searches.length < searchConfig.limit)
+
+    generatedSearches = [...searches];
     return searches;
+  },
+
+  getNextTerm: (currentIndex) => {
+    // Find the next search that hasn't been executed yet
+    const nextSearch = generatedSearches.find(search => search.index > currentIndex);
+    return nextSearch ? nextSearch.term : '';
   },
 
   start: async (elements, searchConfig, searchEngine, timerHandler, stopSearch) => {
@@ -29,6 +40,8 @@ export const searchHandler = {
     }
 
     let searches = searchHandler.generate(searchConfig, searchEngine);
+
+    timerHandler.searchHandler = searchHandler;
 
     searches.forEach((search) => {
       setTimeout(() => {
@@ -40,7 +53,7 @@ export const searchHandler = {
           }, (search.interval <= 10000 && searchConfig.interval !== 9999 ? search.interval : 10000));
         }
         if (search.delay === 0)
-          timerHandler.run(elements, searchConfig);
+          timerHandler.run(elements, searchConfig, searchEngine);
         if (!searchConfig.multitab)
           searchEngine.iframe.add(search, elements);
         else

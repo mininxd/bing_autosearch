@@ -16,10 +16,64 @@ function searchInterval(interval = search.interval) {
 export const searchEngine = {
   terms: {
     lists: [],
+    currentIndex: 0,
+    currentListIndex: 0,
     random: () => {
       let list = searchEngine.terms.lists[Math.floor(Math.random() * searchEngine.terms.lists.length)];
       let term = list[Math.floor(Math.random() * list.length)];
       return term;
+    },
+    next: () => {
+      // Get the current list
+      const currentList = searchEngine.terms.lists[searchEngine.terms.currentListIndex];
+      if (!currentList || currentList.length === 0) {
+        // If no current list or it's empty, return a random term
+        return searchEngine.terms.random();
+      }
+
+      // Get the next term in the current list
+      let term = currentList[searchEngine.terms.currentIndex];
+
+      // Increment index for next call
+      searchEngine.terms.currentIndex++;
+
+      // If we've reached the end of the current list, move to next list and reset index
+      if (searchEngine.terms.currentIndex >= currentList.length) {
+        searchEngine.terms.currentIndex = 0;
+        searchEngine.terms.currentListIndex = (searchEngine.terms.currentListIndex + 1) % searchEngine.terms.lists.length;
+      }
+
+      return term;
+    },
+    peek: () => {
+      // Get the current list
+      const currentList = searchEngine.terms.lists[searchEngine.terms.currentListIndex];
+      if (!currentList || currentList.length === 0) {
+        // If no current list or it's empty, return a random term
+        return searchEngine.terms.random();
+      }
+
+      // Get the next term in the current list without advancing the index
+      let term = currentList[searchEngine.terms.currentIndex];
+
+      // If we've reached the end of the current list, peek at the first term of the next list
+      if (searchEngine.terms.currentIndex >= currentList.length) {
+        const nextListIndex = (searchEngine.terms.currentListIndex + 1) % searchEngine.terms.lists.length;
+        const nextList = searchEngine.terms.lists[nextListIndex];
+        if (nextList && nextList.length > 0) {
+          term = nextList[0];
+        } else {
+          term = searchEngine.terms.random();
+        }
+      } else {
+        term = currentList[searchEngine.terms.currentIndex];
+      }
+
+      return term;
+    },
+    reset: () => {
+      searchEngine.terms.currentIndex = 0;
+      searchEngine.terms.currentListIndex = 0;
     }
   },
   
@@ -69,6 +123,7 @@ export const searchEngine = {
 
       let multitabText = "";
       let wakelockText = "";
+      let sequentialText = "";
 
       const isMultitab =
         elements.select.multitab.options[
@@ -93,7 +148,7 @@ function wakeLockState() {
   const el = document.getElementById("wakeLockStatus");
   if (el) {
     const isUp = BING_AUTOSEARCH.getWakelockStatus();
-    
+
     if (isUp !== lastState) {
       el.innerText = isUp ? "Wake Lock Active" : "Wake Lock Deactivated";
       lastState = isUp;
@@ -106,7 +161,7 @@ wakeLockState();
 
       if (isWakelock) {
         wakelockText = `
-        <div class="px-2 badge">Wake Lock 
+        <div class="px-2 badge">Wake Lock
           <div class="tooltip">
             <div id="wakeLockStatus" class="tooltip-content"></div>
             <i class="fa fa-solid fa-circle-info"></i>

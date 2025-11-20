@@ -12,12 +12,13 @@ const BING_AUTOSEARCH = {
     limit: 35,
     interval: 10000,
     multitab: true,
-    wakelock: false
+    wakelock: false,
   },
   isRunning: false,
   wakeLock: null,
   visibilityChangeHandler: null,
   focusHandler: null,
+  searchTerms: "",
 
   async acquireWakeLock() {
     try {
@@ -100,6 +101,7 @@ const BING_AUTOSEARCH = {
     try {
       const data = search_terms();
       searchEngine.terms.lists = Object.values(data);
+      
     } catch (error) {
       console.error('Failed to load search terms:', error);
     }

@@ -37,5 +37,6 @@ export const eventHandlers = {
 
       location.reload();
     });
+
   }
 };
