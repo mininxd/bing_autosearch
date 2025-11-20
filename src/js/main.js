@@ -13,6 +13,7 @@ const BING_AUTOSEARCH = {
     interval: 10000,
     multitab: true,
     wakelock: false,
+    sequential: false,
   },
   isRunning: false,
   wakeLock: null,
@@ -95,7 +96,7 @@ const BING_AUTOSEARCH = {
 
     elements.select.interval.value = config.interval;
     elements.select.limit.value = config.limit;
-    elements.select.multitab.value = config.multitab.toString();
+    elements.select.multitab.value = (config.multitab !== undefined ? config.multitab : BING_AUTOSEARCH.config.multitab).toString();
     elements.checkbox.wakelock.checked = config.wakelock;
 
     try {

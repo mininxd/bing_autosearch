@@ -45,13 +45,13 @@ export const cookieHandler = {
     if (!_search_interval.value) {
       cookieHandler.set("_search_interval", config.interval.toString(), 365);
     } else {
-      config.interval = parseInt(_search_interval.value.toString());
+      config.interval = parseInt(_search_interval.value || config.interval);
     }
 
     if (!_search_limit.value) {
       cookieHandler.set("_search_limit", config.limit.toString(), 365);
     } else {
-      config.limit = parseInt(_search_limit.value.toString());
+      config.limit = parseInt(_search_limit.value || config.limit);
     }
 
     if (!_multitab_mode.value) {
