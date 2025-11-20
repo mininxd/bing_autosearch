@@ -103,16 +103,18 @@ const BING_AUTOSEARCH = {
 
     // Set default selected categories if not already set in config
     if (config.categories && Array.isArray(config.categories)) {
-      const categorySelect = document.getElementById('slc-categories');
-      for (let option of categorySelect.options) {
-        option.selected = config.categories.includes(option.value);
-      }
+      const categoryForm = document.getElementById('slc-categories');
+      const checkboxes = categoryForm.querySelectorAll('input[name="categories"]');
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = config.categories.includes(checkbox.value);
+      });
     } else {
       // Default to all categories selected
-      const categorySelect = document.getElementById('slc-categories');
-      for (let option of categorySelect.options) {
-        option.selected = true;
-      }
+      const categoryForm = document.getElementById('slc-categories');
+      const checkboxes = categoryForm.querySelectorAll('input[name="categories"]');
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = true;
+      });
       // Update config to include default categories
       BING_AUTOSEARCH.config.categories = ["games", "cars", "songs", "artists", "characters", "movies"];
     }
@@ -122,7 +124,9 @@ const BING_AUTOSEARCH = {
       // Store the search_terms function for later use
       BING_AUTOSEARCH.searchTermsFunction = search_terms;
       // Get selected categories from the UI after options are set
-      const selectedCategories = Array.from(document.getElementById('slc-categories').selectedOptions).map(option => option.value);
+      const categoryForm = document.getElementById('slc-categories');
+      const selectedCheckboxes = categoryForm.querySelectorAll('input[name="categories"]:checked');
+      const selectedCategories = Array.from(selectedCheckboxes).map(checkbox => checkbox.value);
       searchEngine.terms.lists = selectedCategories.map(category => data[category] || []);
 
     } catch (error) {

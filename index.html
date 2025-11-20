@@ -120,19 +120,14 @@
                         <label class="label">
                             <span class="label-text font-bold">Search Categories</span>
                         </label><br>
-<select
-    id="slc-categories"
-    multiple
-    size="6"
-    class="select appearance-none select-bordered"
->
-    <option value="games">Games</option>
-    <option value="cars">Cars</option>
-    <option value="songs">Songs</option>
-    <option value="artists">Artists</option>
-    <option value="characters">Characters</option>
-    <option value="movies">Movies</option>
-</select>
+<form id="slc-categories" class="flex flex-wrap justify-start gap-1">
+  <input class="btn btn-sm" type="checkbox" name="categories" value="games" aria-label="Games"/>
+  <input class="btn btn-sm" type="checkbox" name="categories" value="cars" aria-label="Cars"/>
+  <input class="btn btn-sm" type="checkbox" name="categories" value="songs" aria-label="Songs"/>
+  <input class="btn btn-sm" type="checkbox" name="categories" value="artists" aria-label="Artists"/>
+  <input class="btn btn-sm" type="checkbox" name="categories" value="characters" aria-label="Characters"/>
+  <input class="btn btn-sm" type="checkbox" name="categories" value="movies" aria-label="Movies"/>
+</form>
                     </div>
                     <div class="form-control text-gray-900">
                       <label class="label font-bold">
