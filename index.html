@@ -46,9 +46,9 @@
         </main>
         <footer>
         <div class="flex justify-center gap-1">
-          <button id="btn-settings" class="btn btn-primary modal-button shadow-sm text-primary-content font-bold hover:underline" onclick="document.getElementById('modal-settings').classList.add('modal-open')">Auto Search Settings
+          <button id="btn-settings" class="btn btn-primary modal-button shadow-sm text-primary-content font-bold hover:underline modal-open-btn" data-modal="modal-settings">Auto Search Settings
           </button>
-          <button id="btn-settings-warning" class="btn btn-primary shadow-sm modal-button font-bold hover:underline" onclick="document.getElementById('modal-warning').classList.add('modal-open')"><i class="fa-solid fa-circle-exclamation text-lg"></i>
+          <button id="btn-settings-warning" class="btn btn-primary shadow-sm modal-button font-bold hover:underline modal-open-btn" data-modal="modal-warning"><i class="fa-solid fa-circle-exclamation text-lg"></i>
           </button>
           </div>
             <p class="py-3 mt-12 text-lg text-left font-bold opacity-80">This page is not affiliated with Microsoft, Rewards, Bing or Edge.</p>
@@ -66,7 +66,7 @@
         </footer>
     </section>
     <div id="modal-settings" class="modal text-gray-900">
-        <div class="modal-box shadow-md w-11/12 max-w-2xl md:px-12 md:mx-12">
+        <div class="modal-box shadow-md w-11/12 max-w-2xl max-h-[95%] md:px-12 md:mx-12">
                 <div>
                     <h1 class="text-2xl pb-2">
                         <strong class="text-gray-600 ">Settings</strong>
@@ -116,6 +116,24 @@
                             <option value="false">Disabled</option>
                         </select>
                     </div>
+                    <div class="form-control text-gray-900 pb-3">
+                        <label class="label">
+                            <span class="label-text font-bold">Search Categories</span>
+                        </label><br>
+<select
+    id="slc-categories"
+    multiple
+    size="6"
+    class="select appearance-none select-bordered"
+>
+    <option value="games">Games</option>
+    <option value="cars">Cars</option>
+    <option value="songs">Songs</option>
+    <option value="artists">Artists</option>
+    <option value="characters">Characters</option>
+    <option value="movies">Movies</option>
+</select>
+                    </div>
                     <div class="form-control text-gray-900">
                       <label class="label font-bold">
                            <input type="checkbox" id="chk-wakelock" class="checkbox" />
@@ -128,7 +146,7 @@
 
                 </div>
             <div class="modal-action">
-                <button class="btn btn-primary" onclick="document.getElementById('modal-settings').classList.remove('modal-open')">Close</button>
+                <button class="btn btn-primary modal-close-btn">Close</button>
             </div>
         </div>
     </div>
@@ -149,8 +167,8 @@
             </div>
           </div>
             <div class="modal-action">
-                <button id="btn-settings-warning-close" class="btn btn-error" onclick="document.getElementById('modal-warning').classList.remove('modal-open')">Never See This Again</button>
-                <button class="btn btn-primary" onclick="document.getElementById('modal-warning').classList.remove('modal-open')">Close</button>
+                <button id="btn-settings-warning-close" class="btn btn-error modal-close-btn">Never See This Again</button>
+                <button class="btn btn-primary modal-close-btn">Close</button>
             </div>
         </div>
     </div>

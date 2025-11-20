@@ -16,6 +16,7 @@ export const uiElements = {
         limit: document.getElementById("slc-limit"),
         interval: document.getElementById("slc-interval"),
         multitab: document.getElementById("slc-multitab"),
+        categories: document.getElementById("slc-categories"),
       },
       checkbox: {
         wakelock: document.getElementById("chk-wakelock")

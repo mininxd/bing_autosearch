@@ -11,16 +11,14 @@ export const searchHandler = {
     let randomDelay = 0;
 
     do {
-      // Use random terms (formerly sequential functionality removed)
+      // Use random terms from the selected categories
       let term = searchEngine.terms.random();
-      if (!searches.includes(term)) {
-        let index = searches.length + 1;
-        let url = `https://www.bing.com/search?q=${encodeURIComponent(term.toLowerCase())}&FORM=${searchEngine.form.random()}`;
-        let delay = searchConfig.interval * searches.length;
-        if (searchConfig.interval === 9999 && searches.length > 0)
-          delay = randomDelay = ((Math.floor(Math.random() * 51) + 10) * 1000) + randomDelay;
-        searches.push({ term, url, index, delay, interval: searchConfig.interval });
-      }
+      let index = searches.length + 1;
+      let url = `https://www.bing.com/search?q=${encodeURIComponent(term.toLowerCase())}&FORM=${searchEngine.form.random()}`;
+      let delay = searchConfig.interval * searches.length;
+      if (searchConfig.interval === 9999 && searches.length > 0)
+        delay = randomDelay = ((Math.floor(Math.random() * 51) + 10) * 1000) + randomDelay;
+      searches.push({ term, url, index, delay, interval: searchConfig.interval });
     } while (searches.length < searchConfig.limit)
 
     generatedSearches = [...searches];
@@ -38,6 +36,9 @@ export const searchHandler = {
     if (window.BING_AUTOSEARCH) {
       window.BING_AUTOSEARCH.isRunning = true;
     }
+
+    // Reset term indices to ensure proper cycling
+    searchEngine.terms.reset();
 
     let searches = searchHandler.generate(searchConfig, searchEngine);
 

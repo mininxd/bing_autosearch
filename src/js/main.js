@@ -14,12 +14,14 @@ const BING_AUTOSEARCH = {
     multitab: true,
     wakelock: false,
     sequential: false,
+    categories: ["games", "cars", "songs", "artists", "characters", "movies"],
   },
   isRunning: false,
   wakeLock: null,
   visibilityChangeHandler: null,
   focusHandler: null,
   searchTerms: "",
+  searchTermsFunction: null,
 
   async acquireWakeLock() {
     try {
@@ -99,10 +101,30 @@ const BING_AUTOSEARCH = {
     elements.select.multitab.value = (config.multitab !== undefined ? config.multitab : BING_AUTOSEARCH.config.multitab).toString();
     elements.checkbox.wakelock.checked = config.wakelock;
 
+    // Set default selected categories if not already set in config
+    if (config.categories && Array.isArray(config.categories)) {
+      const categorySelect = document.getElementById('slc-categories');
+      for (let option of categorySelect.options) {
+        option.selected = config.categories.includes(option.value);
+      }
+    } else {
+      // Default to all categories selected
+      const categorySelect = document.getElementById('slc-categories');
+      for (let option of categorySelect.options) {
+        option.selected = true;
+      }
+      // Update config to include default categories
+      BING_AUTOSEARCH.config.categories = ["games", "cars", "songs", "artists", "characters", "movies"];
+    }
+
     try {
       const data = search_terms();
-      searchEngine.terms.lists = Object.values(data);
-      
+      // Store the search_terms function for later use
+      BING_AUTOSEARCH.searchTermsFunction = search_terms;
+      // Get selected categories from the UI after options are set
+      const selectedCategories = Array.from(document.getElementById('slc-categories').selectedOptions).map(option => option.value);
+      searchEngine.terms.lists = selectedCategories.map(category => data[category] || []);
+
     } catch (error) {
       console.error('Failed to load search terms:', error);
     }
@@ -112,6 +134,9 @@ const BING_AUTOSEARCH = {
       cookieHandler,
       BING_AUTOSEARCH.config
     );
+
+    // Make searchEngine available globally for dynamic updates
+    window.searchEngine = searchEngine;
 
     elements.button.start.addEventListener("click", async () => {
       await searchHandler.start(
