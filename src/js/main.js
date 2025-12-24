@@ -1,5 +1,4 @@
 import "./localStorage.js";
-import search_terms from "../data/search-terms.js";
 import { cookieHandler } from "./config/cookieHandler.js";
 import { uiElements } from "./modules/uiElements.js";
 import { timerHandler } from "./modules/timerHandler.js";
@@ -14,14 +13,14 @@ const BING_AUTOSEARCH = {
     multitab: true,
     wakelock: false,
     sequential: false,
-    categories: ["games", "cars", "songs", "artists", "characters", "movies"],
+    categories: [], // Will be populated dynamically
   },
   isRunning: false,
   wakeLock: null,
   visibilityChangeHandler: null,
   focusHandler: null,
   searchTerms: "",
-  searchTermsFunction: null,
+  searchTermsData: {}, // Store loaded data here
 
   async acquireWakeLock() {
     try {
@@ -89,11 +88,47 @@ const BING_AUTOSEARCH = {
     // The wakeLock is set to null in the release event handler when it's released
     return this.wakeLock !== null && this.wakeLock !== false;
   },
+
+  async loadSearchTerms() {
+      const modules = import.meta.glob('../data/search_*.js', { eager: true });
+      const data = {};
+
+      for (const path in modules) {
+          // Extract category name from filename: ../data/search_games.js -> games
+          const category = path.split('/').pop().replace('search_', '').replace('.js', '');
+          data[category] = modules[path].default;
+      }
+
+      this.searchTermsData = data;
+      return data;
+  },
   
   async load() {
     const elements = uiElements.init();
 
+    // Load search terms first to know available categories
+    const data = await this.loadSearchTerms();
+    const availableCategories = Object.keys(data);
+
+    // Dynamically generate checkboxes for categories
+    const categoryForm = document.getElementById('slc-categories');
+    categoryForm.innerHTML = ''; // Clear existing content
+
+    availableCategories.forEach(category => {
+        const input = document.createElement('input');
+        input.type = 'checkbox';
+        input.name = 'categories';
+        input.value = category;
+        input.className = 'btn btn-sm';
+        input.setAttribute('aria-label', category.charAt(0).toUpperCase() + category.slice(1));
+        categoryForm.appendChild(input);
+    });
+
     const config = cookieHandler.load(BING_AUTOSEARCH.config);
+    // Ensure loaded categories are valid (exist in availableCategories)
+    if (config.categories) {
+        config.categories = config.categories.filter(c => availableCategories.includes(c));
+    }
     BING_AUTOSEARCH.config = config;
 
     elements.select.interval.value = config.interval;
@@ -102,28 +137,25 @@ const BING_AUTOSEARCH = {
     elements.checkbox.wakelock.checked = config.wakelock;
 
     // Set default selected categories if not already set in config
-    if (config.categories && Array.isArray(config.categories)) {
-      const categoryForm = document.getElementById('slc-categories');
+    if (config.categories && Array.isArray(config.categories) && config.categories.length > 0) {
       const checkboxes = categoryForm.querySelectorAll('input[name="categories"]');
       checkboxes.forEach(checkbox => {
         checkbox.checked = config.categories.includes(checkbox.value);
       });
     } else {
       // Default to all categories selected
-      const categoryForm = document.getElementById('slc-categories');
       const checkboxes = categoryForm.querySelectorAll('input[name="categories"]');
       checkboxes.forEach(checkbox => {
         checkbox.checked = true;
       });
       // Update config to include default categories
-      BING_AUTOSEARCH.config.categories = ["games", "cars", "songs", "artists", "characters", "movies"];
+      BING_AUTOSEARCH.config.categories = availableCategories;
     }
 
     // Initialize categories message visibility and add individual checkbox listeners for live detection
     updateCategoryMessage();
 
     // Add individual event listeners to each checkbox for immediate feedback
-    const categoryForm = document.getElementById('slc-categories');
     const checkboxes = categoryForm.querySelectorAll('input[name="categories"]');
 
     checkboxes.forEach(checkbox => {
@@ -131,11 +163,7 @@ const BING_AUTOSEARCH = {
     });
 
     try {
-      const data = search_terms();
-      // Store the search_terms function for later use
-      BING_AUTOSEARCH.searchTermsFunction = search_terms;
       // Get selected categories from the UI after options are set
-      const categoryForm = document.getElementById('slc-categories');
       const selectedCheckboxes = categoryForm.querySelectorAll('input[name="categories"]:checked');
       const selectedCategories = Array.from(selectedCheckboxes).map(checkbox => checkbox.value);
       searchEngine.terms.lists = selectedCategories.map(category => data[category] || []);
