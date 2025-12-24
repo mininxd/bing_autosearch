@@ -3,6 +3,6 @@ _Browser-based Bing auto search bot to earn Microsoft Rewards points._
 
 - Forked version (vite based)
 - Refactored with tailwindcss and daisyUI
-- wanna add more search terms? See over [search-terms.js](https://github.com/mininxd/bing_autosearch/blob/master/src/data/search-terms.js)
+- wanna add more search terms? See over [data directory](https://github.com/mininxd/bing_autosearch/tree/master/src/data)
   
 ### __https://bing-xd.vercel.app/__
