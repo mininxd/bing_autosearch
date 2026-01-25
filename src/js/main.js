@@ -1,6 +1,7 @@
+import uiElements from "./modules/uiElements.js";
+
 import "./localStorage.js";
 import { cookieHandler } from "./config/cookieHandler.js";
-import { uiElements } from "./modules/uiElements.js";
 import { timerHandler } from "./modules/timerHandler.js";
 import { searchEngine } from "./modules/searchEngine.js";
 import { searchHandler, stopSearch } from "./modules/searchHandler.js";
