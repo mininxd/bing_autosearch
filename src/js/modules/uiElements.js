@@ -2,9 +2,12 @@
  * Module for managing UI elements and DOM references
  */
 
-export const uiElements = {
+const uiElements = {
   init: () => {
     return {
+      image: {
+        banner: document.getElementById("banner-image")
+      },
       button: {
         start: document.getElementById("btn-start"),
         stop: document.getElementById("btn-stop"),
@@ -32,3 +35,6 @@ export const uiElements = {
     };
   }
 };
+
+
+export default uiElements;

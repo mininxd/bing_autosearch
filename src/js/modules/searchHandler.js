@@ -2,6 +2,9 @@
  * Module for handling search operations including generation and execution
  */
 
+import uiElements from "./uiElements.js";
+const banner = uiElements.init().image.banner;
+
 let isRunning = false;
 let generatedSearches = [];
 
@@ -33,6 +36,7 @@ export const searchHandler = {
 
   start: async (elements, searchConfig, searchEngine, timerHandler, stopSearch) => {
     isRunning = true;
+    banner.src = "../img/rewards_banner.png"
     if (window.BING_AUTOSEARCH) {
       window.BING_AUTOSEARCH.isRunning = true;
     }
@@ -65,6 +69,7 @@ export const searchHandler = {
 
   stop: async () => {
     isRunning = false;
+    banner.src = "../img/rewards.png"
     if (window.BING_AUTOSEARCH) {
       window.BING_AUTOSEARCH.isRunning = false;
     }
