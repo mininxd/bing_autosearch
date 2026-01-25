@@ -36,7 +36,6 @@ export const searchHandler = {
 
   start: async (elements, searchConfig, searchEngine, timerHandler, stopSearch) => {
     isRunning = true;
-    banner.src = "../img/rewards_banner.png"
     if (window.BING_AUTOSEARCH) {
       window.BING_AUTOSEARCH.isRunning = true;
     }
@@ -69,7 +68,6 @@ export const searchHandler = {
 
   stop: async () => {
     isRunning = false;
-    banner.src = "../img/rewards.png"
     if (window.BING_AUTOSEARCH) {
       window.BING_AUTOSEARCH.isRunning = false;
     }
