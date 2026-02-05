@@ -79,7 +79,7 @@ export const searchEngine = {
   
   form: {
     params: [
-      "QBLH", "QBRE", "HDRSC1", "LGWQS1", "LGWQS2", "LGWQS3", "R5FD", "R5FD1", "R5FD2", "R5FD3", "R5FD4", "R5FD5", "R5FD6", "R5FD7", "QSRE1", "QSRE2", "QSRE3", "QSRE4", "QSRE5", "QSRE6", "QSRE7", "QSRE8"
+      "QBLH", "QBRE", "HDRSC1", "LGWQS1", "LGWQS2", "LGWQS3", "R5FD", "R5FD1", "R5FD2", "R5FD3", "R5FD4", "R5FD5", "R5FD6", "R5FD7", "QSRE1", "QSRE2", "QSRE3", "QSRE4", "QSRE5", "QSRE6", "QSRE7", "QSRE8", "ML2PCO"
     ],
     random: () => {
       return searchEngine.form.params[Math.floor(Math.random() * searchEngine.form.params.length)]
@@ -154,7 +154,7 @@ function wakeLockState() {
       lastState = isUp;
     }
   }
-  setTimeout(wakeLockState, 2500);
+  setTimeout(wakeLockState, 2000);
 }
 wakeLockState();
 
