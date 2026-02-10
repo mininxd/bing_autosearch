@@ -71,7 +71,7 @@ export const searchHandler = {
     if (window.BING_AUTOSEARCH) {
       window.BING_AUTOSEARCH.isRunning = false;
     }
-
+  
     window.open("https://rewards.bing.com/pointsbreakdown");
     location.reload();
   }
