@@ -72,7 +72,7 @@ export const searchHandler = {
       window.BING_AUTOSEARCH.isRunning = false;
     }
 
-    window.open("https://rewards.bing.com/earn");
+    window.open("https://rewards.bing.com/pointsbreakdown");
     location.reload();
   }
 };
