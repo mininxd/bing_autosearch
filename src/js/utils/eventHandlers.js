@@ -9,11 +9,15 @@ export const eventHandlers = {
 
     // Store original values to compare against
     const originalValues = {
-      multitab: elements.select.multitab.value,
       limit: elements.select.limit.value,
       interval: elements.select.interval.value,
       wakelock: elements.checkbox.wakelock.checked,
-      categories: Array.from(document.querySelectorAll('#slc-categories input[name="categories"]:checked')).map(checkbox => checkbox.value)
+      newRewardsUI: elements.checkbox.newRewardsUI.checked,
+      categories: Array.from(
+        document.querySelectorAll(
+          '#slc-categories input[name="categories"]:checked',
+        ),
+      ).map((checkbox) => checkbox.value),
     };
 
     elements.button.start.addEventListener("click", () => {
@@ -27,13 +31,6 @@ export const eventHandlers = {
 
     elements.button.stop.addEventListener("click", () => {});
 
-    elements.select.multitab.addEventListener("change", () => {
-      cookieHandler.set("_multitab_mode", elements.select.multitab.value, 365);
-      if (elements.select.multitab.value !== originalValues.multitab) {
-        settingsChanged = true;
-      }
-    });
-
     elements.select.limit.addEventListener("change", () => {
       cookieHandler.set("_search_limit", elements.select.limit.value, 365);
       if (elements.select.limit.value !== originalValues.limit) {
@@ -42,25 +39,50 @@ export const eventHandlers = {
     });
 
     elements.select.interval.addEventListener("change", () => {
-      cookieHandler.set("_search_interval", elements.select.interval.value, 365);
+      cookieHandler.set(
+        "_search_interval",
+        elements.select.interval.value,
+        365,
+      );
       if (elements.select.interval.value !== originalValues.interval) {
         settingsChanged = true;
       }
     });
 
     elements.checkbox.wakelock.addEventListener("change", async () => {
-      cookieHandler.set("_wakelock_enabled", elements.checkbox.wakelock.checked, 365);
+      cookieHandler.set(
+        "_wakelock_enabled",
+        elements.checkbox.wakelock.checked,
+        365,
+      );
       if (elements.checkbox.wakelock.checked !== originalValues.wakelock) {
         settingsChanged = true;
       }
     });
 
+    elements.checkbox.newRewardsUI.addEventListener("change", async () => {
+      cookieHandler.set(
+        "_new_rewards_ui",
+        elements.checkbox.newRewardsUI.checked,
+        365,
+      );
+      if (
+        elements.checkbox.newRewardsUI.checked !== originalValues.newRewardsUI
+      ) {
+        settingsChanged = true;
+      }
+    });
+
     // Handle form change for categories checkboxes
-    const categoryForm = document.getElementById('slc-categories');
+    const categoryForm = document.getElementById("slc-categories");
     if (categoryForm) {
       categoryForm.addEventListener("change", () => {
-        const selectedCheckboxes = categoryForm.querySelectorAll('input[name="categories"]:checked');
-        const selectedCategories = Array.from(selectedCheckboxes).map(checkbox => checkbox.value);
+        const selectedCheckboxes = categoryForm.querySelectorAll(
+          'input[name="categories"]:checked',
+        );
+        const selectedCategories = Array.from(selectedCheckboxes).map(
+          (checkbox) => checkbox.value,
+        );
 
         // Only save to cookie if at least one category is selected
         if (selectedCategories.length > 0) {
@@ -68,12 +90,19 @@ export const eventHandlers = {
         }
 
         // Check if categories have changed
-        const currentCategories = Array.from(selectedCheckboxes).map(checkbox => checkbox.value);
+        const currentCategories = Array.from(selectedCheckboxes).map(
+          (checkbox) => checkbox.value,
+        );
         const originalCategoriesSet = new Set(originalValues.categories);
         const currentCategoriesSet = new Set(currentCategories);
-        const categoriesChanged = originalCategoriesSet.size !== currentCategoriesSet.size ||
-          ![...originalCategoriesSet].every(cat => currentCategoriesSet.has(cat)) ||
-          ![...currentCategoriesSet].every(cat => originalCategoriesSet.has(cat));
+        const categoriesChanged =
+          originalCategoriesSet.size !== currentCategoriesSet.size ||
+          ![...originalCategoriesSet].every((cat) =>
+            currentCategoriesSet.has(cat),
+          ) ||
+          ![...currentCategoriesSet].every((cat) =>
+            originalCategoriesSet.has(cat),
+          );
 
         if (categoriesChanged) {
           settingsChanged = true;
@@ -81,42 +110,51 @@ export const eventHandlers = {
 
         // Update search terms dynamically using the stored function
         try {
-          if (window.BING_AUTOSEARCH && window.BING_AUTOSEARCH.searchTermsFunction) {
+          if (
+            window.BING_AUTOSEARCH &&
+            window.BING_AUTOSEARCH.searchTermsFunction
+          ) {
             const data = window.BING_AUTOSEARCH.searchTermsFunction();
-            const newSearchTerms = selectedCategories.map(category => data[category] || []);
+            const newSearchTerms = selectedCategories.map(
+              (category) => data[category] || [],
+            );
             window.BING_AUTOSEARCH.searchTerms = newSearchTerms;
 
             // Update the searchEngine terms lists
             window.searchEngine.terms.lists = newSearchTerms;
           }
         } catch (error) {
-          console.error('Failed to update search terms:', error);
+          console.error("Failed to update search terms:", error);
         }
 
         // Update the category message display
-        if (typeof updateCategoryMessage === 'function') {
+        if (typeof updateCategoryMessage === "function") {
           updateCategoryMessage();
         }
       });
     }
 
     // Modal closing functionality - click outside to close
-    const settingsModal = document.getElementById('modal-settings');
-    const warningModal = document.getElementById('modal-warning');
+    const settingsModal = document.getElementById("modal-settings");
+    const warningModal = document.getElementById("modal-warning");
 
     // Close settings modal when clicking outside
     if (settingsModal) {
-      settingsModal.addEventListener('click', function(event) {
+      settingsModal.addEventListener("click", function (event) {
         if (event.target === settingsModal) {
           // Check if any categories are selected
-          const categoryForm = document.getElementById('slc-categories');
-          const checkboxes = categoryForm.querySelectorAll('input[name="categories"]');
-          const selectedCheckboxes = Array.from(checkboxes).filter(checkbox => checkbox.checked);
+          const categoryForm = document.getElementById("slc-categories");
+          const checkboxes = categoryForm.querySelectorAll(
+            'input[name="categories"]',
+          );
+          const selectedCheckboxes = Array.from(checkboxes).filter(
+            (checkbox) => checkbox.checked,
+          );
 
           // Prevent closing if no categories are selected
           if (selectedCheckboxes.length === 0) {
             // Show the categories message if hidden
-            if (typeof updateCategoryMessage === 'function') {
+            if (typeof updateCategoryMessage === "function") {
               updateCategoryMessage();
             }
 
@@ -124,7 +162,7 @@ export const eventHandlers = {
             return;
           }
 
-          settingsModal.classList.remove('modal-open');
+          settingsModal.classList.remove("modal-open");
           // Reload page if settings have changed
           if (settingsChanged) {
             location.reload();
@@ -135,29 +173,33 @@ export const eventHandlers = {
 
     // Close warning modal when clicking outside
     if (warningModal) {
-      warningModal.addEventListener('click', function(event) {
+      warningModal.addEventListener("click", function (event) {
         if (event.target === warningModal) {
-          warningModal.classList.remove('modal-open');
+          warningModal.classList.remove("modal-open");
         }
       });
     }
 
     // Handle modal close buttons
-    const modalCloseButtons = document.querySelectorAll('.modal-close-btn');
-    modalCloseButtons.forEach(button => {
-      button.addEventListener('click', function() {
+    const modalCloseButtons = document.querySelectorAll(".modal-close-btn");
+    modalCloseButtons.forEach((button) => {
+      button.addEventListener("click", function () {
         // Find the closest modal and close it
-        const modal = this.closest('.modal');
-        if (modal && modal.id === 'modal-settings') {
+        const modal = this.closest(".modal");
+        if (modal && modal.id === "modal-settings") {
           // Check if any categories are selected
-          const categoryForm = document.getElementById('slc-categories');
-          const checkboxes = categoryForm.querySelectorAll('input[name="categories"]');
-          const selectedCheckboxes = Array.from(checkboxes).filter(checkbox => checkbox.checked);
+          const categoryForm = document.getElementById("slc-categories");
+          const checkboxes = categoryForm.querySelectorAll(
+            'input[name="categories"]',
+          );
+          const selectedCheckboxes = Array.from(checkboxes).filter(
+            (checkbox) => checkbox.checked,
+          );
 
           // Prevent closing if no categories are selected
           if (selectedCheckboxes.length === 0) {
             // Show the categories message if hidden
-            if (typeof updateCategoryMessage === 'function') {
+            if (typeof updateCategoryMessage === "function") {
               updateCategoryMessage();
             }
 
@@ -171,29 +213,28 @@ export const eventHandlers = {
           }
         }
         if (modal) {
-          modal.classList.remove('modal-open');
+          modal.classList.remove("modal-open");
         }
       });
     });
 
     // Handle modal open buttons
-    const modalOpenButtons = document.querySelectorAll('.modal-open-btn');
-    modalOpenButtons.forEach(button => {
-      button.addEventListener('click', function() {
-        const targetModalId = this.getAttribute('data-modal');
+    const modalOpenButtons = document.querySelectorAll(".modal-open-btn");
+    modalOpenButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        const targetModalId = this.getAttribute("data-modal");
         const targetModal = document.getElementById(targetModalId);
         if (targetModal) {
-          targetModal.classList.add('modal-open');
+          targetModal.classList.add("modal-open");
 
           // If this is the settings modal, update the category message visibility
-          if (targetModalId === 'modal-settings') {
-            if (typeof updateCategoryMessage === 'function') {
+          if (targetModalId === "modal-settings") {
+            if (typeof updateCategoryMessage === "function") {
               updateCategoryMessage();
             }
           }
         }
       });
     });
-
-  }
+  },
 };

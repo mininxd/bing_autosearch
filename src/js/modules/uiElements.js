@@ -6,7 +6,7 @@ const uiElements = {
   init: () => {
     return {
       image: {
-        banner: document.getElementById("banner-image")
+        banner: document.getElementById("banner-image"),
       },
       button: {
         start: document.getElementById("btn-start"),
@@ -18,11 +18,11 @@ const uiElements = {
       select: {
         limit: document.getElementById("slc-limit"),
         interval: document.getElementById("slc-interval"),
-        multitab: document.getElementById("slc-multitab"),
         categories: document.getElementById("slc-categories"),
       },
       checkbox: {
-        wakelock: document.getElementById("chk-wakelock")
+        wakelock: document.getElementById("chk-wakelock"),
+        newRewardsUI: document.getElementById("chk-new-rewards-ui"),
       },
       span: {
         progress: document.getElementById("span-progress"),
@@ -30,11 +30,9 @@ const uiElements = {
       div: {
         settings: document.getElementById("div-settings"),
         timer: document.getElementById("div-timer"),
-        bing: document.getElementById("div-bing")
-      }
+      },
     };
-  }
+  },
 };
-
 
 export default uiElements;

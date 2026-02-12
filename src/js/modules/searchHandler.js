@@ -20,9 +20,16 @@ export const searchHandler = {
       let url = `https://www.bing.com/search?q=${encodeURIComponent(term.toLowerCase())}&FORM=${searchEngine.form.random()}`;
       let delay = searchConfig.interval * searches.length;
       if (searchConfig.interval === 9999 && searches.length > 0)
-        delay = randomDelay = ((Math.floor(Math.random() * 51) + 10) * 1000) + randomDelay;
-      searches.push({ term, url, index, delay, interval: searchConfig.interval });
-    } while (searches.length < searchConfig.limit)
+        delay = randomDelay =
+          (Math.floor(Math.random() * 51) + 10) * 1000 + randomDelay;
+      searches.push({
+        term,
+        url,
+        index,
+        delay,
+        interval: searchConfig.interval,
+      });
+    } while (searches.length < searchConfig.limit);
 
     generatedSearches = [...searches];
     return searches;
@@ -30,11 +37,19 @@ export const searchHandler = {
 
   getNextTerm: (currentIndex) => {
     // Find the next search that hasn't been executed yet
-    const nextSearch = generatedSearches.find(search => search.index > currentIndex);
-    return nextSearch ? nextSearch.term : '';
+    const nextSearch = generatedSearches.find(
+      (search) => search.index > currentIndex,
+    );
+    return nextSearch ? nextSearch.term : "";
   },
 
-  start: async (elements, searchConfig, searchEngine, timerHandler, stopSearch) => {
+  start: async (
+    elements,
+    searchConfig,
+    searchEngine,
+    timerHandler,
+    stopSearch,
+  ) => {
     isRunning = true;
     if (window.BING_AUTOSEARCH) {
       window.BING_AUTOSEARCH.isRunning = true;
@@ -52,16 +67,19 @@ export const searchHandler = {
         searchEngine.progress.update(search, elements, searchConfig);
         timerHandler.updateEstimatedTime(search, searchConfig);
         if (search.index === searchConfig.limit) {
-          setTimeout(() => {
-            stopSearch();
-          }, (search.interval <= 10000 && searchConfig.interval !== 9999 ? search.interval : 10000));
+          setTimeout(
+            () => {
+              stopSearch();
+            },
+            search.interval <= 10000 && searchConfig.interval !== 9999
+              ? search.interval
+              : 10000,
+          );
         }
         if (search.delay === 0)
           timerHandler.run(elements, searchConfig, searchEngine);
-        if (!searchConfig.multitab)
-          searchEngine.iframe.add(search, elements);
-        else
-          searchEngine.window.open(search);
+
+        searchEngine.window.open(search);
       }, search.delay);
     });
   },
@@ -71,10 +89,15 @@ export const searchHandler = {
     if (window.BING_AUTOSEARCH) {
       window.BING_AUTOSEARCH.isRunning = false;
     }
-  
-    window.open("https://rewards.bing.com/pointsbreakdown");
+
+    const redirectUrl =
+      window.BING_AUTOSEARCH && window.BING_AUTOSEARCH.config.newRewardsUI
+        ? "https://rewards.bing.com/earn"
+        : "https://rewards.bing.com/pointsbreakdown";
+
+    window.open(redirectUrl);
     location.reload();
-  }
+  },
 };
 
 export const stopSearch = async () => {

@@ -1,7 +1,7 @@
-import { defineConfig } from 'vite'
-import tailwindcss from '@tailwindcss/vite'
-import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
-import packages from './package.json'
+import { defineConfig } from "vite";
+import tailwindcss from "@tailwindcss/vite";
+import { ViteImageOptimizer } from "vite-plugin-image-optimizer";
+import packages from "./package.json";
 
 export default defineConfig({
   plugins: [
@@ -10,9 +10,9 @@ export default defineConfig({
       png: {
         compressionLevel: 9,
         quality: 1,
-        palette: true
-      }
-    })
+        palette: true,
+      },
+    }),
   ],
   define: {
     APP_VER: JSON.stringify(packages.version),
@@ -22,5 +22,5 @@ export default defineConfig({
     sourcemap: false,
     reportCompressedSize: true,
     brotliSize: true,
-  }
-})
+  },
+});

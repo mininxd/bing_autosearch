@@ -11,8 +11,8 @@ const BING_AUTOSEARCH = {
   config: {
     limit: 35,
     interval: 10000,
-    multitab: true,
     wakelock: false,
+    newRewardsUI: false,
     sequential: false,
     categories: [], // Will be populated dynamically
   },
@@ -34,8 +34,8 @@ const BING_AUTOSEARCH = {
       this.wakeLock = await navigator.wakeLock.request("screen");
 
       // Set up rejection handler when the wake lock is released automatically
-      this.wakeLock.addEventListener('release', () => {
-        console.log('Wake Lock was released');
+      this.wakeLock.addEventListener("release", () => {
+        console.log("Wake Lock was released");
         this.wakeLock = null;
 
         // Automatically try to reacquire when released (if wakelock setting is still enabled)
@@ -48,10 +48,13 @@ const BING_AUTOSEARCH = {
 
       // Remove existing event listeners if they exist to avoid duplicates
       if (this.visibilityChangeHandler) {
-        document.removeEventListener('visibilitychange', this.visibilityChangeHandler);
+        document.removeEventListener(
+          "visibilitychange",
+          this.visibilityChangeHandler,
+        );
       }
       if (this.focusHandler) {
-        window.removeEventListener('focus', this.focusHandler);
+        window.removeEventListener("focus", this.focusHandler);
       }
 
       // Create bound event handlers
@@ -59,8 +62,11 @@ const BING_AUTOSEARCH = {
       this.focusHandler = this.handleWindowFocus.bind(this);
 
       // Add event listener to reacquire wake lock when visibility changes
-      document.addEventListener('visibilitychange', this.visibilityChangeHandler);
-      window.addEventListener('focus', this.focusHandler);
+      document.addEventListener(
+        "visibilitychange",
+        this.visibilityChangeHandler,
+      );
+      window.addEventListener("focus", this.focusHandler);
     } catch (e) {
       console.log(e);
       this.wakeLock = false;
@@ -68,7 +74,7 @@ const BING_AUTOSEARCH = {
   },
 
   async handleVisibilityChange() {
-    if (document.visibilityState === 'visible' && this.config.wakelock) {
+    if (document.visibilityState === "visible" && this.config.wakelock) {
       if (!this.wakeLock) {
         await this.acquireWakeLock();
       }
@@ -76,13 +82,12 @@ const BING_AUTOSEARCH = {
   },
 
   async handleWindowFocus() {
-    if (document.visibilityState === 'visible' && this.config.wakelock) {
+    if (document.visibilityState === "visible" && this.config.wakelock) {
       if (!this.wakeLock) {
         await this.acquireWakeLock();
       }
     }
   },
-
 
   getWakelockStatus() {
     // Return true if wake lock is active (not null or false)
@@ -91,19 +96,23 @@ const BING_AUTOSEARCH = {
   },
 
   async loadSearchTerms() {
-      const modules = import.meta.glob('../data/search_*.js', { eager: true });
-      const data = {};
+    const modules = import.meta.glob("../data/search_*.js", { eager: true });
+    const data = {};
 
-      for (const path in modules) {
-          // Extract category name from filename: ../data/search_games.js -> games
-          const category = path.split('/').pop().replace('search_', '').replace('.js', '');
-          data[category] = modules[path].default;
-      }
+    for (const path in modules) {
+      // Extract category name from filename: ../data/search_games.js -> games
+      const category = path
+        .split("/")
+        .pop()
+        .replace("search_", "")
+        .replace(".js", "");
+      data[category] = modules[path].default;
+    }
 
-      this.searchTermsData = data;
-      return data;
+    this.searchTermsData = data;
+    return data;
   },
-  
+
   async load() {
     const elements = uiElements.init();
 
@@ -112,41 +121,54 @@ const BING_AUTOSEARCH = {
     const availableCategories = Object.keys(data);
 
     // Dynamically generate checkboxes for categories
-    const categoryForm = document.getElementById('slc-categories');
-    categoryForm.innerHTML = ''; // Clear existing content
+    const categoryForm = document.getElementById("slc-categories");
+    categoryForm.innerHTML = ""; // Clear existing content
 
-    availableCategories.forEach(category => {
-        const input = document.createElement('input');
-        input.type = 'checkbox';
-        input.name = 'categories';
-        input.value = category;
-        input.className = 'btn btn-sm';
-        input.setAttribute('aria-label', category.charAt(0).toUpperCase() + category.slice(1));
-        categoryForm.appendChild(input);
+    availableCategories.forEach((category) => {
+      const input = document.createElement("input");
+      input.type = "checkbox";
+      input.name = "categories";
+      input.value = category;
+      input.className = "btn btn-sm";
+      input.setAttribute(
+        "aria-label",
+        category.charAt(0).toUpperCase() + category.slice(1),
+      );
+      categoryForm.appendChild(input);
     });
 
     const config = cookieHandler.load(BING_AUTOSEARCH.config);
     // Ensure loaded categories are valid (exist in availableCategories)
     if (config.categories) {
-        config.categories = config.categories.filter(c => availableCategories.includes(c));
+      config.categories = config.categories.filter((c) =>
+        availableCategories.includes(c),
+      );
     }
     BING_AUTOSEARCH.config = config;
 
     elements.select.interval.value = config.interval;
     elements.select.limit.value = config.limit;
-    elements.select.multitab.value = (config.multitab !== undefined ? config.multitab : BING_AUTOSEARCH.config.multitab).toString();
     elements.checkbox.wakelock.checked = config.wakelock;
+    elements.checkbox.newRewardsUI.checked = config.newRewardsUI;
 
     // Set default selected categories if not already set in config
-    if (config.categories && Array.isArray(config.categories) && config.categories.length > 0) {
-      const checkboxes = categoryForm.querySelectorAll('input[name="categories"]');
-      checkboxes.forEach(checkbox => {
+    if (
+      config.categories &&
+      Array.isArray(config.categories) &&
+      config.categories.length > 0
+    ) {
+      const checkboxes = categoryForm.querySelectorAll(
+        'input[name="categories"]',
+      );
+      checkboxes.forEach((checkbox) => {
         checkbox.checked = config.categories.includes(checkbox.value);
       });
     } else {
       // Default to all categories selected
-      const checkboxes = categoryForm.querySelectorAll('input[name="categories"]');
-      checkboxes.forEach(checkbox => {
+      const checkboxes = categoryForm.querySelectorAll(
+        'input[name="categories"]',
+      );
+      checkboxes.forEach((checkbox) => {
         checkbox.checked = true;
       });
       // Update config to include default categories
@@ -157,30 +179,38 @@ const BING_AUTOSEARCH = {
     updateCategoryMessage();
 
     // Add individual event listeners to each checkbox for immediate feedback
-    const checkboxes = categoryForm.querySelectorAll('input[name="categories"]');
+    const checkboxes = categoryForm.querySelectorAll(
+      'input[name="categories"]',
+    );
 
-    checkboxes.forEach(checkbox => {
-      checkbox.addEventListener('change', updateCategoryMessage);
+    checkboxes.forEach((checkbox) => {
+      checkbox.addEventListener("change", updateCategoryMessage);
     });
 
     try {
       // Get selected categories from the UI after options are set
-      const selectedCheckboxes = categoryForm.querySelectorAll('input[name="categories"]:checked');
-      const selectedCategories = Array.from(selectedCheckboxes).map(checkbox => checkbox.value);
-      searchEngine.terms.lists = selectedCategories.map(category => data[category] || []);
-
+      const selectedCheckboxes = categoryForm.querySelectorAll(
+        'input[name="categories"]:checked',
+      );
+      const selectedCategories = Array.from(selectedCheckboxes).map(
+        (checkbox) => checkbox.value,
+      );
+      searchEngine.terms.lists = selectedCategories.map(
+        (category) => data[category] || [],
+      );
     } catch (error) {
-      console.error('Failed to load search terms:', error);
+      console.error("Failed to load search terms:", error);
     }
 
     eventHandlers.setupEventListeners(
       elements,
       cookieHandler,
-      BING_AUTOSEARCH.config
+      BING_AUTOSEARCH.config,
     );
 
-    // Make searchEngine available globally for dynamic updates
+    // Make searchEngine and BING_AUTOSEARCH available globally
     window.searchEngine = searchEngine;
+    window.BING_AUTOSEARCH = BING_AUTOSEARCH;
 
     elements.button.start.addEventListener("click", async () => {
       await searchHandler.start(
@@ -188,7 +218,7 @@ const BING_AUTOSEARCH = {
         BING_AUTOSEARCH.config,
         searchEngine,
         timerHandler,
-        stopSearch
+        stopSearch,
       );
     });
 
@@ -199,21 +229,23 @@ const BING_AUTOSEARCH = {
     elements.div.settings.innerHTML = `${searchEngine.settings
       .toString(elements, BING_AUTOSEARCH)
       .replace(/\([^)]*\)/g, "")}`;
-  }
+  },
 };
 
 // Function to check if any categories are selected and update message visibility
 function updateCategoryMessage() {
-  const categoryForm = document.getElementById('slc-categories');
+  const categoryForm = document.getElementById("slc-categories");
   const checkboxes = categoryForm.querySelectorAll('input[name="categories"]');
-  const selectedCheckboxes = Array.from(checkboxes).filter(checkbox => checkbox.checked);
-  const categoriesMsg = document.getElementById('categoriesMsg');
+  const selectedCheckboxes = Array.from(checkboxes).filter(
+    (checkbox) => checkbox.checked,
+  );
+  const categoriesMsg = document.getElementById("categoriesMsg");
 
   // Show message if no categories are selected
   if (selectedCheckboxes.length === 0) {
-    categoriesMsg.style.display = 'block';
+    categoriesMsg.style.display = "block";
   } else {
-    categoriesMsg.style.display = 'none';
+    categoriesMsg.style.display = "none";
   }
 }
 

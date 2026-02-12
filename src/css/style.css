@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 @import "tailwindcss";
 @import "./keyframe.css";
 @plugin "daisyui";
@@ -26,7 +26,7 @@
   --color-success-content: oklch(37% 0.077 168.94);
   --color-warning: oklch(82% 0.189 84.429);
   --color-warning-content: oklch(41% 0.112 45.904);
-  --color-error: oklch(80% 0.070 19.571);
+  --color-error: oklch(80% 0.07 19.571);
   --color-error-content: oklch(27% 0.105 12.094);
   --radius-selector: 2rem;
   --radius-field: 0.5rem;
@@ -37,4 +37,3 @@
   --depth: 1;
   --noise: 0;
 }
-

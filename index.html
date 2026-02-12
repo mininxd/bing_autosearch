@@ -1,169 +1,293 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" data-theme="default">
-<head>
+  <head>
     <meta charset="utf-8" />
     <meta http-equiv="content-language" content="en-us" />
     <meta meta="title" content="Bing Auto Search for Microsoft Rewards" />
-    <meta name="description" content="Browser-based Bing auto search bot to earn Microsoft Rewards points." />
+    <meta
+      name="description"
+      content="Browser-based Bing auto search bot to earn Microsoft Rewards points."
+    />
     <meta name="theme-color" content="#1662ca" />
     <meta name="robots" content="all" />
     <meta name="author" content="Mininxd" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
     <meta property="og:locale" content="en_US" />
     <meta property="og:url" content="https://bing-xd.vercel.app/" />
-    <meta property="og:title" content="Bing Auto Search for Microsoft Rewards" />
-    <meta property="og:site_name" content="Bing Auto Search for Microsoft Rewards" />
-    <meta name="google-site-verification" content="L4S5DIpQ11ynm2ovdHMuCkYkjA_lnqAFKXgNg9vq3-s" />
-    <meta property="og:description" content="Browser-based Bing auto search bot to earn Microsoft Rewards points." />
+    <meta
+      property="og:title"
+      content="Bing Auto Search for Microsoft Rewards"
+    />
+    <meta
+      property="og:site_name"
+      content="Bing Auto Search for Microsoft Rewards"
+    />
+    <meta
+      name="google-site-verification"
+      content="L4S5DIpQ11ynm2ovdHMuCkYkjA_lnqAFKXgNg9vq3-s"
+    />
+    <meta
+      property="og:description"
+      content="Browser-based Bing auto search bot to earn Microsoft Rewards points."
+    />
     <meta property="og:type" content="website" />
-    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link rel="icon" type="image/png" href="img/favicon.png" />
     <link type="text/css" rel="stylesheet" href="src/css/style.css" />
-    <link type="text/css" rel="stylesheet" href="https://use.fontawesome.com/releases/v6.1.1/css/all.css" />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v6.1.1/css/all.css"
+    />
     <title>Bing Auto Search for Microsoft Rewards</title>
-</head>
-<body class="h-full flex items-center bg-[#1662ca] text-white font-['Roboto']">
-    <section id="wrapper" class="max-w-[650px] mx-auto text-center px-4 pt-4 h-screen">
-        <header>
-          <div class="w-full flex justify-center">
-            <img id="banner-image" src="img/rewards.png" alt="Microsoft Rewards" class="w-[128px] pb-2" />
+  </head>
+  <body
+    class="h-full flex items-center bg-[#1662ca] text-white font-['Roboto']"
+  >
+    <section
+      id="wrapper"
+      class="max-w-[650px] mx-auto text-center px-4 pt-4 h-screen"
+    >
+      <header>
+        <div class="w-full flex justify-center">
+          <img
+            id="banner-image"
+            src="img/rewards.png"
+            alt="Microsoft Rewards"
+            class="w-[128px] pb-2"
+          />
+        </div>
+        <h2 class="font-black text-2xl text-white/75 pb-2">
+          Bing Auto Search for Microsoft Rewards
+        </h2>
+      </header>
+      <main class="py-1">
+        <div>
+          <button
+            type="button"
+            id="btn-start"
+            class="btn shadow-xl btn-warning btn-lg bg-amber-500 hover:bg-amber-600 text-white font-bold px-6 rounded-lg text-xl"
+          >
+            <i class="fas fa-play-circle"></i>
+            <strong class="font-bold">Click to Start Auto Search</strong>
+          </button>
+          <button
+            type="button"
+            id="btn-stop"
+            class="btn btn-danger btn-lg bg-red-500 hover:bg-red-600 text-white font-bold px-6 rounded-lg text-xl"
+            style="display: none"
+          >
+            <i class="fas fa-stop-circle"></i>
+            <strong class="font-bold"
+              >Stop Auto Search <span id="span-progress"></span
+            ></strong>
+          </button>
+          <div
+            id="div-timer"
+            class="text-sm mt-2 mb-6 opacity-70"
+            style="display: none"
+          >
+            Loading Auto Search Timer...
           </div>
-            <h2 class="font-black text-2xl text-white/75 pb-2">Bing Auto Search for Microsoft Rewards</h2>
-        </header>
-        <main class="py-1">
-            <div>
-                <button type="button" id="btn-start" class="btn shadow-xl btn-warning btn-lg bg-amber-500 hover:bg-amber-600 text-white font-bold px-6 rounded-lg text-xl">
-                    <i class="fas fa-play-circle"></i>
-                    <strong class="font-bold">Click to Start Auto Search</strong>
-                </button>
-                <button type="button" id="btn-stop" class="btn btn-danger btn-lg bg-red-500 hover:bg-red-600 text-white font-bold px-6 rounded-lg text-xl" style="display: none;">
-                    <i class="fas fa-stop-circle"></i>
-                    <strong class="font-bold">Stop Auto Search <span id="span-progress"></span></strong>
-                </button>
-                    <div id="div-timer" class="text-sm mt-2 mb-6 opacity-70" style="display: none;">Loading Auto Search Timer...</div>
-              <div id="div-settings" class="text-sm opacity-70 pb-1">Loading Auto Search Settings...</div>
-            </div>
-            <div id="div-bing" style="display: none !important; width: 0px !important; height: 0px !important;"></div>
-        </main>
-        <footer>
+          <div id="div-settings" class="text-sm opacity-70 pb-1">
+            Loading Auto Search Settings...
+          </div>
+        </div>
+      </main>
+      <footer>
         <div class="flex justify-center gap-1">
-          <button id="btn-settings" class="btn btn-primary modal-button shadow-sm text-primary-content font-bold hover:underline modal-open-btn" data-modal="modal-settings">Auto Search Settings
+          <button
+            id="btn-settings"
+            class="btn btn-primary modal-button shadow-sm text-primary-content font-bold hover:underline modal-open-btn"
+            data-modal="modal-settings"
+          >
+            Auto Search Settings
           </button>
-          <button id="btn-settings-warning" class="btn btn-primary shadow-sm modal-button font-bold hover:underline modal-open-btn" data-modal="modal-warning"><i class="fa-solid fa-circle-exclamation text-lg"></i>
+          <button
+            id="btn-settings-warning"
+            class="btn btn-primary shadow-sm modal-button font-bold hover:underline modal-open-btn"
+            data-modal="modal-warning"
+          >
+            <i class="fa-solid fa-circle-exclamation text-lg"></i>
           </button>
-          </div>
-            <p class="py-3 mt-12 text-lg text-left font-bold opacity-80">This page is not affiliated with Microsoft, Rewards, Bing or Edge.</p>
-            
-            <hr class="opacity-25 mb-2"/>
-            <label class="opacity-80">Originally made by</label>&nbsp;<a href="https://gerisonsabino.com/bing_autosearch/" target="_blank" class="text-yellow-400 font-bolder no-underline hover:underline">Gérison Sabino</a>
-            <br />
-            <small class="opacity-80">This is a forked version and is licensed under open source terms on <a href="https://github.com/mininxd/bing_autosearch/" target="_blank" class="text-yellow-400 font-bolder no-underline hover:underline">GitHub</a>.</small>
-            
-            <div class="pt-4 flex justify-center">
+        </div>
+        <p class="py-3 mt-12 text-lg text-left font-bold opacity-80">
+          This page is not affiliated with Microsoft, Rewards, Bing or Edge.
+        </p>
+
+        <hr class="opacity-25 mb-2" />
+        <label class="opacity-80">Originally made by</label>&nbsp;<a
+          href="https://gerisonsabino.com/bing_autosearch/"
+          target="_blank"
+          class="text-yellow-400 font-bolder no-underline hover:underline"
+          >Gérison Sabino</a
+        >
+        <br />
+        <small class="opacity-80"
+          >This is a forked version and is licensed under open source terms on
+          <a
+            href="https://github.com/mininxd/bing_autosearch/"
+            target="_blank"
+            class="text-yellow-400 font-bolder no-underline hover:underline"
+            >GitHub</a
+          >.</small
+        >
+
+        <div class="pt-4 flex justify-center">
           <a href="https://ko-fi.com/mininxd/" target="_blank">
-            <button class="btn btn-sm btn-primary">Buy Me As Coffee <i class="fa fa-solid fa-mug-hot"></i></button>
-            </a>    
-            </div>
-        </footer>
+            <button class="btn btn-sm btn-primary">
+              Buy Me As Coffee <i class="fa fa-solid fa-mug-hot"></i>
+            </button>
+          </a>
+        </div>
+      </footer>
     </section>
     <div id="modal-settings" class="modal text-gray-900">
-        <div class="modal-box shadow-md w-11/12 max-w-2xl max-h-[95%] md:px-12 md:mx-12">
-                <div>
-                    <h1 class="text-2xl pb-2">
-                        <strong class="text-gray-600 ">Settings</strong>
-                    </h1>
-                    <div class="form-control text-gray-900  pb-3">
-                        <label class="label">
-                            <span class="label-text font-bold">Limit</span>
-                        </label><br>
-                        <select class="select appearance-none select-bordered" id="slc-limit">
-                            <option value="5">05 searches</option>
-                            <option value="10">10 searches</option>
-                            <option value="20">20 searches</option>
-                            <option value="25">25 searches</option>
-                            <option value="30">30 searches</option>
-                            <option value="35" selected="selected">35 searches (default)</option>
-                            <option value="40">40 searches</option>
-                            <option value="45">45 searches</option>
-                            <option value="50">50 searches</option>
-                        </select>
-                    </div>
-                    <div class=" text-gray-900    pb-3">
-                        <label class="label">
-                            <span class="label-text font-bold">Interval</span>
-                        </label><br>
-                        <select class="select appearance-none select-bordered" id="slc-interval">
-                            <option value="5000">05 seconds</option>
-                            <option value="10000" selected="selected">10 seconds (default)</option>
-                            <option value="15000">15 seconds</option>
-                            <option value="30000">30 seconds</option>
-                            <option value="60000">60 seconds</option>
-                            <option value="9999">10~60 seconds (random)</option>
-                            <option value="120000">02 minutes</option>
-                            <option value="180000">03 minutes</option>
-                            <option value="240000">04 minutes</option>
-                            <option value="300000">05 minutes (recomended for restricted accounts)</option>
-                        </select>
-                    </div>
-                    <div class="form-control text-gray-900 pb-3">
-                        <label class="label">
-                            <span class="label-text font-bold">Multi-tab Mode</span>
-                        </label><br>
-                        <p class="text-sm text-gray-400 mb-2">
-                            When enabled, it's necessary to allow opening of multiple tabs/pop-ups in your browser.
-                        </p>
-                        <select class="select appearance-none select-bordered" id="slc-multitab">
-                            <option selected="selected" value="true">Enabled (default)</option>
-                            <option value="false">Disabled</option>
-                        </select>
-                    </div>
-                    <div class="form-control text-gray-900 pb-3">
-                        <label class="label">
-                            <span class="label-text font-bold">Search Categories</span>
-                        </label>
-                        <p id="categoriesMsg" class="text-red-500 text-sm font-bold">
-                      Select atleast 1 categories
-                        </p>
-<form id="slc-categories" class="flex flex-wrap justify-start gap-1">
-</form>
-                    </div>
-                    <div class="form-control text-gray-900">
-                      <label class="label font-bold">
-                           <input type="checkbox" id="chk-wakelock" class="checkbox" />
-                           Acquire Wake Lock
-                      </label>
-                      <p class="text-sm text-gray-400 mb-2">
-                      When enabled, it prevents your screen from turning off, especially on mobile devices.
-                        </p>
-                    </div>
-
-                </div>
-            <div class="modal-action">
-                <button class="btn btn-primary modal-close-btn">Close</button>
+      <div
+        class="modal-box shadow-md w-11/12 max-w-2xl max-h-[95%] md:px-12 md:mx-12"
+      >
+        <div>
+          <h1 class="text-2xl pb-2">
+            <strong class="text-gray-600">Settings</strong>
+          </h1>
+          <div class="collapse collapse-arrow border border-base-300 bg-base-100 rounded-box mb-3">
+            <input type="checkbox" checked="checked" />
+            <div class="collapse-title text-md font-bold bg-base-200">
+              Search Configuration
             </div>
-        </div>
-    </div>
-    <div id="modal-warning" class="modal text-gray-900">
-        <div class="modal-box shadow-md w-11/12 max-w-2xl md:px-12 md:mx-12">
-          <div class="card bg-base-100">
-            <div class="card-body rounded-md text-error-content bg-error border-1 border-red-600">
-              <span class="font-extrabold text-red-600">"Points Need A Break"</span>
-               Under the new Microsoft Rewards rules, for some restricted accounts, points will only be awarded for 3 searches every 15 minutes (If this is your case, use the 5 minute interval).
-              <br><br>
-              <span class="inline">
-               Using automation tools is against the <a class="font-extrabold underline text-red-600" href="https://www.microsoft.com/en-US/servicesagreement/#14l_MicrosoftRewards" target="_blank">Microsoft Rewards terms of use.
-              </a>
-              </span>
-              <span class="font-extrabold">
-                Your account may be restricted, suspended and/or banned, use this tool at your own risk.
-             </span>
+            <div class="collapse-content bg-base-200">
+              <div class="form-control">
+                <label class="label">
+                  <span class="label-text font-bold text-gray-700">Limit</span>
+                </label>
+                <select
+                  class="select appearance-none select-bordered w-full"
+                  id="slc-limit"
+                >
+                  <option value="5">05 searches</option>
+                  <option value="10">10 searches</option>
+                  <option value="20">20 searches</option>
+                  <option value="25">25 searches</option>
+                  <option value="30">30 searches</option>
+                  <option value="35" selected="selected">
+                    35 searches (default)
+                  </option>
+                  <option value="40">40 searches</option>
+                  <option value="45">45 searches</option>
+                  <option value="50">50 searches</option>
+                </select>
+              </div>
+              <div>
+                <label class="label">
+                  <span class="label-text font-bold text-gray-700">Interval</span>
+                </label>
+                <select
+                  class="select appearance-none select-bordered w-full"
+                  id="slc-interval"
+                >
+                  <option value="5000">05 seconds</option>
+                  <option value="10000" selected="selected">
+                    10 seconds (default)
+                  </option>
+                  <option value="15000">15 seconds</option>
+                  <option value="30000">30 seconds</option>
+                  <option value="60000">60 seconds</option>
+                  <option value="9999">10~60 seconds (random)</option>
+                  <option value="120000">02 minutes</option>
+                  <option value="180000">03 minutes</option>
+                  <option value="240000">04 minutes</option>
+                  <option value="300000">
+                    05 minutes (recomended for restricted accounts)
+                  </option>
+                </select>
+              </div>
             </div>
           </div>
-            <div class="modal-action">
-                <button id="btn-settings-warning-close" class="btn btn-error modal-close-btn">Never See This Again</button>
-                <button class="btn btn-primary modal-close-btn">Close</button>
+          <div class="collapse collapse-arrow border border-base-300 bg-base-100 rounded-box mb-2">
+            <input type="checkbox" />
+            <div class="collapse-title text-md font-bold bg-base-200">
+              Advanced Options
             </div>
+            <div class="collapse-content bg-base-200">
+              <div class="form-control text-gray-900">
+                <label class="label font-bold cursor-pointer flex justify-start gap-4">
+                  <input type="checkbox" id="chk-wakelock" class="checkbox" />
+                  <span class="label-text font-bold text-gray-700">Acquire Wake Lock</span>
+                </label>
+                <p class="text-xs text-gray-500 mb-4">
+                  When enabled, it prevents your screen from turning off, especially
+                  on mobile devices.
+                </p>
+                
+                <label class="label font-bold cursor-pointer flex justify-start gap-4">
+                  <input type="checkbox" id="chk-new-rewards-ui" class="checkbox" />
+                  <span class="label-text font-bold text-gray-700">New rewards UI</span>
+                </label>
+                <p class="text-xs text-gray-500 mb-2">
+                  When enabled, it will redirect to <strong>/earn</strong> instead of <strong>/pointsbreakdown</strong> after stop automation.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="collapse collapse-arrow border border-base-300 bg-base-200 rounded-box mb-3">
+            <input type="checkbox" />
+            <div class="collapse-title text-md font-bold">
+              Search Categories
+            </div>
+            <div class="collapse-content">
+              <p id="categoriesMsg" class="text-red-500 text-sm font-bold">
+                Select atleast 1 categories
+              </p>
+              <form id="slc-categories" class="flex flex-wrap justify-start gap-1"></form>
+            </div>
+          </div>
         </div>
+        <div class="modal-action">
+          <button class="btn btn-primary modal-close-btn">Close</button>
+        </div>
+      </div>
+    </div>
+    <div id="modal-warning" class="modal text-gray-900">
+      <div class="modal-box shadow-md w-11/12 max-w-2xl md:px-12 md:mx-12">
+        <div class="card bg-base-100">
+          <div
+            class="card-body rounded-md text-error-content bg-error border-1 border-red-600"
+          >
+            <span class="font-extrabold text-red-600"
+              >"Points Need A Break"</span
+            >
+            Under the new Microsoft Rewards rules, for some restricted accounts,
+            points will only be awarded for 3 searches every 15 minutes (If this
+            is your case, use the 5 minute interval).
+            <br /><br />
+            <span class="inline">
+              Using automation tools is against the
+              <a
+                class="font-extrabold underline text-red-600"
+                href="https://www.microsoft.com/en-US/servicesagreement/#14l_MicrosoftRewards"
+                target="_blank"
+                >Microsoft Rewards terms of use.
+              </a>
+            </span>
+            <span class="font-extrabold">
+              Your account may be restricted, suspended and/or banned, use this
+              tool at your own risk.
+            </span>
+          </div>
+        </div>
+        <div class="modal-action">
+          <button
+            id="btn-settings-warning-close"
+            class="btn btn-error modal-close-btn"
+          >
+            Never See This Again
+          </button>
+          <button class="btn btn-primary modal-close-btn">Close</button>
+        </div>
+      </div>
     </div>
     <script type="module" src="src/js/main.js"></script>
-</body>
+  </body>
 </html>
